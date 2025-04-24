@@ -216,6 +216,7 @@ try:
 
             current_operation = sorted_operations[operation_count]
 
+            #komentar, ki bo preizkusil GitHub
             
 
             if (previousOperation_NR1["metrics"]["status"] == "Finished" and current_state_NR1 == "Idle") or (operation_count == 0):
