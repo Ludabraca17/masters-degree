@@ -21,7 +21,7 @@ def read_attribute(username, password, device_id, thingsboard_url, attribute_key
     """
     This function reads the TB attribute from the virtual device. This data is set on the main dashboard.
     """
-    
+
     # Client attributes to be read
     attributes_to_read = [attribute_key]  # Replace with the attributes you want to read
 
@@ -43,13 +43,12 @@ def read_attribute(username, password, device_id, thingsboard_url, attribute_key
         else:
             print(f"Failed to read attributes. Status Code: {response.status_code}, Response: {response.text}")
 
-
     # Main logic
     jwt_token = get_jwt_token()
     if jwt_token:
         local_variable = read_client_attributes(jwt_token)[0]["value"]
         return local_variable
-    
+
 def update_attribute(username, password, device_id, thingsboard_url, attribute_key, attribute_value):
     """
     This function updates the TB attribute on the virtual device. This data is set on the main dashboard.
@@ -103,13 +102,31 @@ def sort_operations_by_queue_position(operations):
     '''
     This function sorts the operations based on the queuePosition attribute. The queuePosition is set by the digital twin of the factory.
     '''
-    return sorted(operations, key=lambda x: x["data"]["queuePosition"])
-    
+    sorted_operations = sorted(operations, key=lambda x: x["data"]["queuePosition"])
+    result = []
+    current_group = []
+    current_number = None
+
+    for operation in sorted_operations:
+        number = operation["data"]["queuePosition"]
+        if number != current_number:
+            if current_group:
+                result.append(current_group)
+            current_group = [operation]
+            current_number = number
+        else:
+            current_group.append(operation)
+
+    if current_group:
+        result.append(current_group)
+
+    return result
+
 def transport_operation(current_operation, operation_count):
     """
     This function represents the logic of a transport operation. It updates the attributes of the conveyor and AGV devices to start the transport.
     In this phase it is hardcoded for module1 and module2, but the upgrade will include the dynamic selection of the modules. Current two input variables
-    (current_operation adn operation_count) are trivial since they are both global variables. In the future we will add variables for whichever module is 
+    (current_operation adn operation_count) are trivial since they are both global variables. In the future we will add variables for whichever module is
     selected for transport by the digital twin.
     """
 
@@ -127,7 +144,7 @@ def transport_operation(current_operation, operation_count):
             try:
                 while condition == "Waiting":
                     print("USPEŠNO V PRVI WHILE ZANKI")
-                    
+
                     #AGV povratni signal - AGV na modulu1 - to še moram dobiti (berem stanje AGV device)
                     if read_attribute(USERNAME, PASSWORD, AGV_ID, THINGSBOARD_URL, "status") == "Waiting" and updated == False:
                         update_attribute(USERNAME, PASSWORD, NODE_RED_1_DEVICE_ID, THINGSBOARD_URL, "conveyorMessage", "AGV ready")
@@ -138,10 +155,10 @@ def transport_operation(current_operation, operation_count):
                         update_attribute(USERNAME, PASSWORD, AGV_ID, THINGSBOARD_URL, "commandAGV", "Go")
                         #update_attribute(USERNAME, PASSWORD, NODE_RED_1_DEVICE_ID, THINGSBOARD_URL, "conveyorResponse", "Idle")
                         break
-                        
+
             except KeyboardInterrupt:
                 pass
-            
+
             if read_attribute(USERNAME, PASSWORD, NODE_RED_1_DEVICE_ID, THINGSBOARD_URL, "conveyorResponse") == "Sent" and input("Enter 'y' to continue: ").strip().lower() == 'y':
                 #for now y means that the AGV has transported the part to the second assembly station
                 #read_attribute(USERNAME, PASSWORD, AGV_ID, THINGSBOARD_URL, "status") == "Finished"
@@ -152,27 +169,26 @@ def transport_operation(current_operation, operation_count):
                 try:
                     while True:
                         print("Čakam da trak odpelje kos na montažno mesto")
-                        if read_attribute(USERNAME, PASSWORD, NODE_RED_2_DEVICE_ID, THINGSBOARD_URL, "conveyorResponse") == "Prepared":                                        
+                        if read_attribute(USERNAME, PASSWORD, NODE_RED_2_DEVICE_ID, THINGSBOARD_URL, "conveyorResponse") == "Prepared":
                             update_attribute(USERNAME, PASSWORD, NODE_RED_2_DEVICE_ID, THINGSBOARD_URL, "currentOperation", current_operation)
                             operation_count += 1
                             print("Operation count: ", operation_count)
                             print("Current subpart: ", current_operation["data"]["part"])
                             break
-                            
+
                 except KeyboardInterrupt:
                     pass
 
             if read_attribute(USERNAME, PASSWORD, NODE_RED_2_DEVICE_ID, THINGSBOARD_URL, "conveyorResponse") == "Prepared":
                 update_attribute(USERNAME, PASSWORD, NODE_RED_2_DEVICE_ID, THINGSBOARD_URL, "conveyorResponse", "Idle")
                 transport_condition = False
-                
+
                 #if read_attribute(USERNAME, PASSWORD, AGV_ID, THINGSBOARD_URL, "") == "":
 
     except KeyboardInterrupt:
         pass
 
     return operation_count
-
 
 #START of logic
 
@@ -214,18 +230,14 @@ try:
 
             #print("Sorted operations: ", sorted_operations)
 
-            current_operation = sorted_operations[operation_count]
-
-            #komentar, ki bo preizkusil GitHub
-
-
-
-            #drugi komentar
+            current_operation_group = sorted_operations[operation_count // len(sorted_operations[0])]
+            current_operation = current_operation_group[operation_count % len(current_operation_group)]
+            print("Current operation: ", current_operation)
 
             if (previousOperation_NR1["metrics"]["status"] == "Finished" and current_state_NR1 == "Idle") or (operation_count == 0):
                 #change status of the previous operation to "finished" for uploading to TB
-                #prepared_order[0]["assembly"][current_operation["data"]["machineID"]]["metrics"]["status"] = "Finished" 
-                
+                #prepared_order[0]["assembly"][current_operation["data"]["machineID"]]["metrics"]["status"] = "Finished"
+
                 #operacije modul1
                 if (current_operation["data"]["machineID"] == "module1"):
                     update_attribute(USERNAME, PASSWORD, NODE_RED_1_DEVICE_ID, THINGSBOARD_URL, "currentOperation", current_operation)
@@ -233,25 +245,17 @@ try:
                     print("Operation count: ", operation_count)
                     print("Current subpart: ", current_operation["data"]["part"])
 
-
-
                 #transport
                 elif (current_operation["data"]["AGVstartPos"] and current_operation["data"]["AGVendPos"]) != None:
                     operation_count = transport_operation(current_operation, operation_count)
-  
-                    
+
                 #operacije modul2
                 elif (previousOperation_NR2["metrics"]["status"] == "Finished") and (current_state_NR2 == "Idle"):
-                    
                     if current_operation["data"]["machineID"] == "module2":
                         update_attribute(USERNAME, PASSWORD, NODE_RED_2_DEVICE_ID, THINGSBOARD_URL, "currentOperation", current_operation)
                         operation_count += 1
                         print("Operation count: ", operation_count)
                         print("Current subpart: ", current_operation["data"]["part"])
-
-
-
-
 
         except KeyError:
             pass
@@ -264,9 +268,6 @@ try:
         time.sleep(3)
 except KeyboardInterrupt:
     pass
-
-
-
 
 #treba bo narediti datoteko bolj odporno
 
