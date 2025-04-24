@@ -1,0 +1,103 @@
+{
+    "productId": "OP2",
+    "productName": "shipModule",
+    "subpartsQuantity": 5,
+    "metrics": {
+        "status": "In Progress",
+        "startTime": null,
+        "endTime": null,
+        "processTime": null
+    },
+    "assembly": {
+        "operation1": {
+            "data": {
+                "machineID": "module1",
+                "assemblyParent": "ship",
+                "part": "shipBase",
+                "color": "yellow",
+                "queuePosition": null,
+                "scheduledOpStart": null,
+                "scheduledOpEnd": null,
+                "AGVstartPos": null,
+                "AGVendPos": null
+            },
+            "metrics": {
+                "status": "In progress",
+                "realOpStart": "unknownScheduledStart",
+                "realOpEnd": "unknownScheduledEnd"
+            }
+        },
+        "operation2": {
+            "data": {
+                "machineID": "module1",
+                "assemblyParent": "ship",
+                "part": "shipHull",
+                "color": "yellow",
+                "queuePosition": null,
+                "scheduledOpStart": null,
+                "scheduledOpEnd": null,
+                "AGVstartPos": null,
+                "AGVendPos": null
+            },
+            "metrics": {
+                "status": "In progress",
+                "realOpStart": "unknownScheduledStart",
+                "realOpEnd": "unknownScheduledEnd"
+            }
+        },
+        "operation3": {
+            "data": {
+                "machineID": "module2",
+                "assemblyParent": "ship",
+                "part": "shipContainerSmall",
+                "color": "yellow",
+                "queuePosition": null,
+                "scheduledOpStart": null,
+                "scheduledOpEnd": null,
+                "AGVstartPos": null,
+                "AGVendPos": null
+            },
+            "metrics": {
+                "status": "In progress",
+                "realOpStart": "unknownScheduledStart",
+                "realOpEnd": "unknownScheduledEnd"
+            }
+        },
+        "operation4": {
+            "data": {
+                "machineID": "module2",
+                "assemblyParent": "ship",
+                "part": "shipContainerBig",
+                "color": "yellow",
+                "queuePosition": null,
+                "scheduledOpStart": null,
+                "scheduledOpEnd": null,
+                "AGVstartPos": null,
+                "AGVendPos": null
+            },
+            "metrics": {
+                "status": "In progress",
+                "realOpStart": "unknownScheduledStart",
+                "realOpEnd": "unknownScheduledEnd"
+            }
+        },
+        "operation5": {
+            "data": {
+                "machineID": "module2",
+                "assemblyParent": "ship",
+                "part": "shipBridge",
+                "color": "yellow",
+                "queuePosition": null,
+                "scheduledOpStart": null,
+                "scheduledOpEnd": null,
+                "AGVstartPos": null,
+                "AGVendPos": null
+            },
+            "metrics": {
+                "status": "In progress",
+                "realOpStart": "unknownScheduledStart",
+                "realOpEnd": "unknownScheduledEnd"
+            }
+        }
+    }
+}
