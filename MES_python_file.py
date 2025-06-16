@@ -164,7 +164,7 @@ def main_transport_operation(current_operation, operation_count):
     print("ZAČETEK TRANSPORTA")
     #priprava za oddajanje kosa AGVju
     update_attribute(USERNAME, PASSWORD, NODE_RED_1_DEVICE_ID, THINGSBOARD_URL, "conveyorMessage", "Start")
-    update_attribute(USERNAME, PASSWORD, AGV_ID, THINGSBOARD_URL, "commandAGV", "Prepare to receive part")
+    update_attribute(USERNAME, PASSWORD, AGV_ID, THINGSBOARD_URL, "commandAGV", "Prepare")
     transport_condition = True
     updated = False #internal logic variable for next while loop
     try:
@@ -241,6 +241,7 @@ def assembly_logic(current_operation):
         #operacije modul1
         if (current_operation["data"]["machineID"] == "module1"):
             update_attribute(USERNAME, PASSWORD, NODE_RED_1_DEVICE_ID, THINGSBOARD_URL, "currentOperation", current_operation)
+            #end_of_order.append(return_data(current_operation))#poskus branja podatkov iz modulov
             operation_count += 1
             print("Operation count: ", operation_count)
             print("Current subpart: ", current_operation["data"]["part"])
@@ -253,6 +254,7 @@ def assembly_logic(current_operation):
         elif (previousOperation_NR2["metrics"]["status"] == "Finished") and (current_state_NR2 == "Idle"):
             if current_operation["data"]["machineID"] == "module2":
                 update_attribute(USERNAME, PASSWORD, NODE_RED_2_DEVICE_ID, THINGSBOARD_URL, "currentOperation", current_operation)
+                #end_of_order.append(return_data(current_operation))#poskus branja podatkov iz modulov
                 operation_count += 1
                 print("Operation count: ", operation_count)
                 print("Current subpart: ", current_operation["data"]["part"])
@@ -301,7 +303,8 @@ def transport_after_assembly(current_operation_group, i):
 
 def multiple_modules_logic(current_operation_group):
     """
-    Docstring!
+    Function takes the current operation group that has two operations and runs them both. That way we can operate on 
+    both production modules at the same time if the digital twin decides to do so. 
     """
     global operation_count,previousOperation_NR1, previousOperation_NR2, current_state_NR1, current_state_NR2
 
@@ -331,6 +334,7 @@ def multiple_modules_logic(current_operation_group):
                         
                     else:
                         pass
+                end_of_order.append(return_data(current_operation_group))#poskus branja podatkov iz modulov
                 operation_count += 1
                 print("Operation count: ", operation_count)
                 print("ZAKLJUČENA WHILE ZANKA!")
@@ -343,6 +347,27 @@ def multiple_modules_logic(current_operation_group):
 
     return 
 
+
+def return_data(current_operation_group: list):
+    """
+    This function returns the data of the current operation to the JSON structure of the order which is displayed when 
+    the order is finished. In the future it will also return data to TB virtual device so we can see the progress of the 
+    order in the dashboard.
+    """
+
+    return_order = []
+
+    for i in current_operation_group:
+        if i["data"]["machineID"] == "module1":
+            var = read_attribute(USERNAME, PASSWORD, NODE_RED_1_DEVICE_ID, THINGSBOARD_URL, "currentOperation")
+            return_order.append(var)
+
+        elif i["data"]["machineID"] == "module2":
+            var = read_attribute(USERNAME, PASSWORD, NODE_RED_2_DEVICE_ID, THINGSBOARD_URL, "currentOperation")
+            return_order.append(var)
+    
+    return return_order
+
 #START of logic
 #These are commands that upon startup of the script are sent to the devices to reset them to the initial state.
 operation_count = 0
@@ -353,6 +378,8 @@ update_attribute(USERNAME, PASSWORD, NODE_RED_2_DEVICE_ID, THINGSBOARD_URL, "con
 update_attribute(USERNAME, PASSWORD, NODE_RED_2_DEVICE_ID, THINGSBOARD_URL, "conveyorResponse", "Idle")
 
 update_attribute(USERNAME, PASSWORD, AGV_ID, THINGSBOARD_URL, "commandAGV", "Idle")
+
+end_of_order = []
 
 try:
     while True:
@@ -388,21 +415,21 @@ try:
 
             elif len(current_operation_group) > 1:
                 print("Drugi IF")
-                #print("Operation count: ", operation_count)
+                #print("Operation count: ", operation_count) 
                 #print("Current operation group: ", current_operation_group)
                 multiple_modules_logic(current_operation_group=current_operation_group)
 
         except:
             pass
 
-
-
         if (operation_count == len(sorted_operations)) and (operation_count != 0):
             update_attribute(USERNAME, PASSWORD, VIRTUAL_DEVICE_ID, THINGSBOARD_URL, "productionOrder", {})
             operation_count = 0
             print("Production order finished")
+            print(end_of_order)
+            end_of_order = []
 
-        time.sleep(3)
+        time.sleep(1)
 except KeyboardInterrupt:
     pass
 
