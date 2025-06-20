@@ -2,6 +2,7 @@ import logging
 import requests
 import time
 import json
+from datetime import datetime
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
@@ -233,11 +234,11 @@ def assembly_logic(current_operation):
     and then returns the whole order back to TB. It should do so every time the operation is finished. This is NOT yet implemented.
     """
     global operation_count, previousOperation_NR1, previousOperation_NR2, current_state_NR1, current_state_NR2, current_operation_group
-
+    
     if (previousOperation_NR1["metrics"]["status"] == "Finished" and current_state_NR1 == "Idle") or (operation_count == 0):
     #change status of the previous operation to "finished" for uploading to TB
     #prepared_order[0]["assembly"][current_operation["data"]["machineID"]]["metrics"]["status"] = "Finished"
-
+        
         #operacije modul1
         if (current_operation["data"]["machineID"] == "module1"):
             update_attribute(USERNAME, PASSWORD, NODE_RED_1_DEVICE_ID, THINGSBOARD_URL, "currentOperation", current_operation)
@@ -271,7 +272,6 @@ def assembly_logic(current_operation):
                                 break
                     except KeyboardInterrupt:
                         pass
-    
     return operation_count
 
 def transport_after_assembly(current_operation_group, i):
@@ -377,9 +377,11 @@ update_attribute(USERNAME, PASSWORD, NODE_RED_1_DEVICE_ID, THINGSBOARD_URL, "con
 update_attribute(USERNAME, PASSWORD, NODE_RED_2_DEVICE_ID, THINGSBOARD_URL, "conveyorMessage", "Idle")
 update_attribute(USERNAME, PASSWORD, NODE_RED_2_DEVICE_ID, THINGSBOARD_URL, "conveyorResponse", "Idle")
 
+#dodaj spremembo statusa tako da bo status == Finished
 update_attribute(USERNAME, PASSWORD, AGV_ID, THINGSBOARD_URL, "commandAGV", "Idle")
 
 end_of_order = []
+times_list = []
 
 try:
     while True:
@@ -390,10 +392,10 @@ try:
 
         previousOperation_NR1 = read_attribute(USERNAME, PASSWORD, NODE_RED_1_DEVICE_ID, THINGSBOARD_URL, "currentOperation")
         previousOperation_NR2 = read_attribute(USERNAME, PASSWORD, NODE_RED_2_DEVICE_ID, THINGSBOARD_URL, "currentOperation")
-
+        
         current_state_NR1 = read_attribute(USERNAME, PASSWORD, NODE_RED_1_DEVICE_ID, THINGSBOARD_URL, "currentState")
         current_state_NR2 = read_attribute(USERNAME, PASSWORD, NODE_RED_2_DEVICE_ID, THINGSBOARD_URL, "currentState")
-
+        
         #print("Previous operation from NR1 :", previousOperation_NR1)
 
         sorted_operations = sort_operations_by_queue_position(order_data=order_data) #sorted operations by queue position from digital twin
@@ -422,12 +424,36 @@ try:
         except:
             pass
 
+        
+        #Ne najbolj uspešno zajemanje časa operacij, to bo potrebno narediti kar v funkciji za montažo, tako da ko se konča montaža se shrani čas
+        try:
+            time_data = read_attribute(USERNAME, PASSWORD, NODE_RED_2_DEVICE_ID, THINGSBOARD_URL, "currentOperation")
+            #print(time_data)
+            #time_data = json.loads(string_time_data)
+            time1 = time_data["metrics"]["realOpStart"]
+            time2 = time_data["metrics"]["realOpEnd"]
+            
+            dt1 = datetime.fromisoformat(time1.replace('Z', '+00:00'))
+            dt2 = datetime.fromisoformat(time2.replace('Z', '+00:00'))
+
+            diff = dt2 - dt1
+            times_list.append(diff)
+
+            print(f"Čas operacije: {diff}")
+
+        except ValueError:
+            pass
+        
         if (operation_count == len(sorted_operations)) and (operation_count != 0):
             update_attribute(USERNAME, PASSWORD, VIRTUAL_DEVICE_ID, THINGSBOARD_URL, "productionOrder", {})
             operation_count = 0
             print("Production order finished")
             print(end_of_order)
             end_of_order = []
+            for i in times_list:
+                print(i)
+
+        
 
         time.sleep(1)
 except KeyboardInterrupt:

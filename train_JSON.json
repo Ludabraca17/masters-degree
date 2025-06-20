@@ -19,7 +19,8 @@
                 "scheduledOpStart": null,
                 "scheduledOpEnd": null,
                 "AGVstartPos": null,
-                "AGVendPos": "module1"
+                "AGVendPos": "module1",
+                "AGV": "AGV1"
             },
             "metrics": {
                 "status": "In progress",
@@ -37,7 +38,8 @@
                 "scheduledOpStart": null,
                 "scheduledOpEnd": null,
                 "AGVstartPos": null,
-                "AGVendPos": null
+                "AGVendPos": null,
+                "AGV": null
             },
             "metrics": {
                 "status": "In progress",
@@ -55,7 +57,8 @@
                 "scheduledOpStart": null,
                 "scheduledOpEnd": null,
                 "AGVstartPos": "module1",
-                "AGVendPos": "module2"
+                "AGVendPos": "module2",
+                "AGV": "AGV1"
             },
             "metrics": {
                 "status": "In progress",
@@ -73,7 +76,8 @@
                 "scheduledOpStart": null,
                 "scheduledOpEnd": null,
                 "AGVstartPos": null,
-                "AGVendPos": null
+                "AGVendPos": null,
+                "AGV": null
             },
             "metrics": {
                 "status": "In progress",
@@ -91,7 +95,8 @@
                 "scheduledOpStart": null,
                 "scheduledOpEnd": null,
                 "AGVstartPos": "module2",
-                "AGVendPos": null
+                "AGVendPos": null,
+                "AGV": "AGV1"
             },
             "metrics": {
                 "status": "In progress",
