@@ -19,13 +19,13 @@ def basic_assembly_operation(current_operation_group, operation_count, credentia
         print(credentials["module_details"][current_operation_group["data"]["machineID"]])
         update.update_attribute(USERNAME, PASSWORD, credentials["module_details"][current_operation_group["data"]["machineID"]]["device_id"], THINGSBOARD_URL, "currentOperation", current_operation_group)
 
-        operation_count += 1
+        
         print("Operation count: ", operation_count)
         print("Current subpart: ", current_operation_group["data"]["part"])
     except Exception as e:
         print(f"An error occurred: {e}")
 
-    return operation_count
+    return 
 
 def multiple_assembly_operation(current_operation_group, operation_count, credentials):
     """
@@ -46,7 +46,6 @@ def multiple_assembly_operation(current_operation_group, operation_count, creden
         print(credentials["module_details"][current_operation_group["data"]["machineID"]])
         update.update_attribute(USERNAME, PASSWORD, credentials["module_details"][current_operation_group["data"]["machineID"]]["device_id"], THINGSBOARD_URL, "currentOperation", current_operation_group)
 
-        operation_count += 1
         print("Operation count: ", operation_count)
         print("Current subpart: ", current_operation_group["data"]["part"])
     except Exception as e:

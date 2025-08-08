@@ -64,6 +64,7 @@ def collect_data():
     This function reads the returned data from NR and returns it to the TB. It should also append the next
     data and then overwrite the data on TB. 
     """
+    #end_of_order.append() bla bla bla
 
 def send_number_of_parts():
     """

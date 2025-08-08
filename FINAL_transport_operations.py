@@ -71,10 +71,10 @@ def main_transport_operation(current_operation, previous_operation, operation_co
                 try:
                     while True:
                         if read.read_attribute(USERNAME, PASSWORD, credentials["module_details"][current_operation["data"]["machineID"]]["device_id"], THINGSBOARD_URL, "conveyorResponse") == "Prepared":
-                            update.update_attribute(USERNAME, PASSWORD, credentials["module_details"][current_operation["data"]["machineID"]]["device_id"], THINGSBOARD_URL, "currentOperation", current_operation)
-                            operation_count += 1
-                            print("Operation count: ", operation_count)
-                            print("Current subpart: ", current_operation["data"]["part"])
+                            #update.update_attribute(USERNAME, PASSWORD, credentials["module_details"][current_operation["data"]["machineID"]]["device_id"], THINGSBOARD_URL, "currentOperation", current_operation)
+                            
+                            #print("Operation count: ", operation_count)
+                            #print("Current subpart: ", current_operation["data"]["part"])
                             break
                         
                 except KeyboardInterrupt:
@@ -103,10 +103,10 @@ def end_transport_operation(current_operation, operation_count, credentials):
 
     print("Transport after assembly function")
     #tole spodaj je en velik vprašaj... mogoče ne bi bilo slabo razviti standardne operacije (transport sestava itn in jih potem klicati v if stavkih)        
-    update.update_attribute(USERNAME, PASSWORD, credentials["module_details"][current_operation["data"]["machineID"]]["device_id"], THINGSBOARD_URL, "currentOperation", current_operation)
+    #update.update_attribute(USERNAME, PASSWORD, credentials["module_details"][current_operation["data"]["machineID"]]["device_id"], THINGSBOARD_URL, "currentOperation", current_operation)
     
-    print("Operation count: ", operation_count)
-    print("Current subpart: ", current_operation["data"]["part"])
+    #print("Operation count: ", operation_count)
+    #print("Current subpart: ", current_operation["data"]["part"])
             
     print("Start transport after assembly")
     #transporting after finished assembly
@@ -118,7 +118,7 @@ def end_transport_operation(current_operation, operation_count, credentials):
             if read.read_attribute(USERNAME, PASSWORD, credentials["module_details"][current_operation["data"]["machineID"]]["device_id"], THINGSBOARD_URL, "currentOperation")["metrics"]["status"] == "Finished":
                 update.update_attribute(USERNAME, PASSWORD, credentials["module_details"][current_operation["data"]["machineID"]]["device_id"], THINGSBOARD_URL, "conveyorMessage", "Start")
                 #pošlji nek ukaz za agv da lahko gre odložit na končno pozicijo
-                if read.read_attribute(USERNAME, PASSWORD, credentials["module_details"][current_operation["data"]["machineID"]]["device_id"], THINGSBOARD_URL, "conveyorMessage") == "Waiting":
+                if read.read_attribute(USERNAME, PASSWORD, credentials["module_details"][current_operation["data"]["machineID"]]["device_id"], THINGSBOARD_URL, "conveyorResponse") == "Waiting":
                     update.update_attribute(USERNAME, PASSWORD, credentials["module_details"][current_operation["data"]["machineID"]]["device_id"], THINGSBOARD_URL, "conveyorMessage", "Idle")
                     #pošli signal na agv da odpelje izdelek na končno pozicijo
                     #dodaj še 10 s transport al koliko je že
