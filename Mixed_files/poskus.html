@@ -1,0 +1,15 @@
+<div>
+    <h3>Attribute Control</h3>
+
+    <!-- Dynamically create toggle switches for each attribute -->
+    <div *ngFor="let attribute of attributes | keyvalue">
+        <mat-slide-toggle [(ngModel)]="attributes[attribute.key]" (change)="toggleAttribute(attribute.key)">
+            {{ attribute.key }}: {{ attributes[attribute.key] }}
+        </mat-slide-toggle>
+    </div>
+
+    <!-- Button to update all toggled attributes -->
+    <button mat-raised-button (click)="updateAttributes()">
+        Update All Attributes
+    </button>
+</div>
