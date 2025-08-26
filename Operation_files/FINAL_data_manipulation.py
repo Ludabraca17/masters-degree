@@ -3,16 +3,22 @@ import FINAL_read_attribute as read
 import copy
 import traceback
 
-def sort_operations_by_queue_position(order_data):
-    '''
+def sort_operations_by_queue_position(order):
+    """
     This function takes the entire order and extracts the operations from it.
     The operations are sorted primarily by "queuePosition". If two operations have the same queuePosition,
     they are further sorted by "uniqueOpID" to ensure a consistent order.
     The function returns a flat list of operations.
-    '''
+
+    Args:
+        order (_type_): Dictionary of operations and a header in an order.
+
+    Returns:
+        _type_: List of operations sorted by queuePosition and uniqueOpID.
+    """
     new_operations = []
     try:
-        several_orders = order_data["productData"][0]["products"]
+        several_orders = order["productData"][0]["products"]
 
         # Extract operations from the order data
         for order in several_orders:
@@ -34,6 +40,10 @@ def update_order_data(order, credentials):
     """
     Reads the current operation which is finished or processing and updates the order_data.
     If the order changes, updates the TB attribute 'productionOrder'.
+
+    Args:
+        order (_type_): Dictionary of operations and a header in an order.
+        credentials (_type_): JSON file with credentials and other details of production and AMR modules.
     """
     USERNAME = credentials["thingsboard_data"]["username"]
     PASSWORD = credentials["thingsboard_data"]["password"]
@@ -79,13 +89,13 @@ def update_order_data(order, credentials):
     
 
 
-def get_next_operations(credentials, order_data, sorted_operations):
-    """
-    Select next operations to send, respecting:
-    - Dependencies (all previous ops for the same product must be finished).
-    - Status ("Waiting" or "Transport done").
-    - Modules not busy ("Processing", "Waiting for transport").
-    - Transport filter: block source & destination modules for transport ops in 'Waiting for transport'.
+def get_next_operations(credentials, order, sorted_operations):
+    """_summary_ TO ŠE NAPIŠI
+
+    Args:
+        credentials (_type_): JSON file with credentials and other details of production and AMR modules.
+        order (_type_): Dictionary of operations and a header in an order.
+        sorted_operations (_type_): List of operations sorted by a function "sort_operations_by_queue_position(order)".
     """
     try:
         modules = credentials["module_details"]
@@ -99,7 +109,7 @@ def get_next_operations(credentials, order_data, sorted_operations):
 
         blocked_modules = set()  # ✅ FIX: Initialize here
 
-        products = order_data["productData"][0]["products"]
+        products = order["productData"][0]["products"]
 
         # Bucket ops by machineID
         for product in products:
@@ -188,7 +198,7 @@ def get_next_operations(credentials, order_data, sorted_operations):
         print(f"[ERROR] Exception in get_next_operations: {e}")
         import traceback
         traceback.print_exc()
-        return None
+
 
 
 
