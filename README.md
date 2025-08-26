@@ -1,6 +1,10 @@
 # Master's degree repository
 
-![Alt text](repo_image.jpg)
+<!-- markdownlint-disable MD033 -->
+<p align="center">
+  <img src="repo_image.jpg" alt="Repo logo" width="200">
+</p>
+<!-- markdownlint-enable MD033 -->
 
 This repository contains files and notes taken through the duration of writing of master's degree thesis on a smart factory case study.
 There are three folder which contain code, JSON files and so on. For the operation of the system only FINAL_files folder is important.
