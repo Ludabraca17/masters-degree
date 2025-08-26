@@ -1,0 +1,113 @@
+{
+    "productId": "OP1",
+    "productName": "trainModule",
+    "subpartsQuantity": 5,
+    "metrics": {
+        "status": "In Progress",
+        "startTime": "null",
+        "endTime": "null",
+        "processTime": "null"
+    },
+    "assembly": {
+        "operation1": {
+            "data": {
+                "machineID": "module1",
+                "uniqueOpID": 101,
+                "assemblyParent": "train",
+                "part": "trainBase",
+                "color": "yellow",
+                "queuePosition": "null",
+                "scheduledOpStart": "null",
+                "scheduledOpEnd": "null",
+                "AGVstartPos": "null",
+                "AGVendPos": "module1",
+                "AGV": "AGV1"
+            },
+            "metrics": {
+                "status": "In progress",
+                "realOpStart": "unknownRealStart",
+                "realOpEnd": "unknownRealEnd"
+            }
+        },
+        "operation2": {
+            "data": {
+                "machineID": "module1",
+                "uniqueOpID": 102,
+                "assemblyParent": "train",
+                "part": "trainWheels",
+                "color": "yellow",
+                "queuePosition": "null",
+                "scheduledOpStart": "null",
+                "scheduledOpEnd": "null",
+                "AGVstartPos": "null",
+                "AGVendPos": "null",
+                "AGV": "null"
+            },
+            "metrics": {
+                "status": "In progress",
+                "realOpStart": "unknownRealStart",
+                "realOpEnd": "unknownRealEnd"
+            }
+        },
+        "operation3": {
+            "data": {
+                "machineID": "module2",
+                "uniqueOpID": 103,
+                "assemblyParent": "train",
+                "part": "trainEngine",
+                "color": "yellow",
+                "queuePosition": "null",
+                "scheduledOpStart": "null",
+                "scheduledOpEnd": "null",
+                "AGVstartPos": "module1",
+                "AGVendPos": "module2",
+                "AGV": "AGV1"
+            },
+            "metrics": {
+                "status": "In progress",
+                "realOpStart": "unknownRealStart",
+                "realOpEnd": "unknownRealEnd"
+            }
+        },
+        "operation4": {
+            "data": {
+                "machineID": "module2",
+                "uniqueOpID": 104,
+                "assemblyParent": "train",
+                "part": "trainCabin",
+                "color": "yellow",
+                "queuePosition": "null",
+                "scheduledOpStart": "null",
+                "scheduledOpEnd": "null",
+                "AGVstartPos": "null",
+                "AGVendPos": "null",
+                "AGV": "null"
+            },
+            "metrics": {
+                "status": "In progress",
+                "realOpStart": "unknownRealStart",
+                "realOpEnd": "unknownRealEnd"
+            }
+        },
+        "operation5": {
+            "data": {
+                "machineID": "module2",
+                "uniqueOpID": 105,
+                "assemblyParent": "train",
+                "part": "trainChimney",
+                "color": "yellow",
+                "queuePosition": "null",
+                "scheduledOpStart": "null",
+                "scheduledOpEnd": "null",
+                "AGVstartPos": "module2",
+                "AGVendPos": "null",
+                "AGV": "AGV1"
+            },
+            "metrics": {
+                "status": "In progress",
+                "realOpStart": "unknownRealStart",
+                "realOpEnd": "unknownRealEnd"
+            }
+        }
+    }
+}
