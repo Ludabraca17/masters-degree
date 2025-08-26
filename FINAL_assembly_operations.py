@@ -1,5 +1,6 @@
 #this file contains functions for assembly operations
 import FINAL_update_attribute as update
+#import FINAL_data_manipulation as manipulation
 
 def basic_assembly_operation(current_operation_group, operation_count, credentials):
     """
@@ -10,7 +11,8 @@ def basic_assembly_operation(current_operation_group, operation_count, credentia
     USERNAME = credentials["thingsboard_data"]["username"]
     PASSWORD = credentials["thingsboard_data"]["password"]
     VIRTUAL_DEVICE_ID = credentials["misc_details"]["virtual_device"]["device_id"]
-    THINGSBOARD_URL = credentials["thingsboard_data"]["tb_url"]
+    THINGSBOARD_URL = credentials["thingsboard_data"]["tb_url"]   
+
     try:
         print("Znotraj funkcije")
         print(current_operation_group)
