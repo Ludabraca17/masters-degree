@@ -1,0 +1,5 @@
+TOLE JE ZGOLJ TXT DATOTEKA
+
+-popravi JSON oblike za ladjo in mozaik (oblika, status v "metrics" itn.) to je v widgetih
+-nadgradi MES datoteko za ostale izdelke
+-popravi NodeRed tako, da bo ustrezal notaciji iz nove MES datoteke

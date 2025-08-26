@@ -1,0 +1,134 @@
+{
+  "productData": [
+    {
+      "orderId": "ord1",
+      "customer": "LASIM",
+      "dueDate": "2025-04-15",
+      "status": "In Progress",
+      "operations": [
+        {
+          "operationId": "OP1",
+          "machineId": "MODULE1",
+          "module": "trainModule",
+          "subpartsQuantity": 1,
+          "metrics": {
+            "status": "In Progress",
+            "startTime": "unknownStart",
+            "endTime": "unknownEnd",
+            "processTime": "unknownTime"
+          },
+          "assembly": {
+            "operation1": {
+              "part": "trainBase",
+              "color": "yellow"
+            },
+            "operation2": {
+              "part": "trainWheels",
+              "color": "green"
+            },
+            "operation3": {
+              "part": "trainEngine",
+              "color": "green"
+            },
+            "operation4": {
+              "part": "trainCabin",
+              "color": "green"
+            },
+            "operation5": {
+              "part": "trainChimney",
+              "color": "black"
+            }
+          }
+        },
+        {
+          "operationId": "OP2",
+          "machineId": "MODULE1",
+          "module": "shipModule",
+          "subpartsQuantity": 1,
+          "metrics": {
+            "status": "In Progress",
+            "startTime": "unknownStart",
+            "endTime": "unknownEnd",
+            "processTime": "unknownTime"
+          },
+          "assembly": {
+            "operation1": {
+              "part": "shipBase",
+              "color": "yellow"
+            },
+            "operation2": {
+              "part": "shipHull",
+              "color": "green"
+            },
+            "operation3": {
+              "part": "shipContainerSmall",
+              "color": "green"
+            },
+            "operation4": {
+              "part": "shipContainerBig",
+              "color": "green"
+            },
+            "operation5": {
+              "part": "shipBridge",
+              "color": "red"
+            }
+          }          
+        },
+        {
+          "operationId": "OP3",
+          "machineId": "MODULE1",
+          "module": "mosaicModule",
+          "subpartsQuantity": 1,
+          "metrics": {
+            "status": "In Progress",
+            "startTime": "unknownStart",
+            "endTime": "unknownEnd",
+            "processTime": "unknownTime"
+          },
+          "assembly": {
+            "operation1": {
+              "part": "cubesBase",
+              "color": "blue"
+            },
+            "operation2": {
+              "part": "mosaicOne",
+              "color": "yellow"
+            },
+            "operation3": {
+              "part": "mosaicTwo",
+              "color": "yellow"
+            },
+            "operation4": {
+              "part": "mosaicThree",
+              "color": "green"
+            },
+            "operation5": {
+              "part": "mosaicFour",
+              "color": "red"
+            },
+            "operation6": {
+              "part": "mosaicFive",
+              "color": "red"
+            },
+            "operation7": {
+              "part": "mosaicSix",
+              "color": "green"
+            },
+            "operation8": {
+              "part": "mosaicSeven",
+              "color": "blue"
+            },
+            "operation9": {
+              "part": "mosaicEight",
+              "color": "blue"
+            },              
+            "operation10": {
+              "part": "mosaicNine",
+              "color": "blue"
+            }
+          }            
+        }
+      ]
+    }
+  ]
+}
