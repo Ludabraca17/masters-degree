@@ -1,4 +1,4 @@
-#this is a new MES python file which is created on foundation of the previous MES file which is too much hardcoded
+#this is a new MES python file which is created on foundation of the previous MES file ("MES_python_file.py and FINAL_MES.py") which is too much hardcoded
 
 import logging
 import requests
