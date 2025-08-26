@@ -450,8 +450,8 @@ try:
             print("Production order finished")
             print(end_of_order)
             end_of_order = []
-            for i in times_list:
-                print(i)
+            #for i in times_list:
+                #print(i)
 
         
 
