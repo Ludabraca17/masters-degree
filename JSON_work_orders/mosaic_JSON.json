@@ -1,0 +1,193 @@
+{
+    "productId": "OP3",
+    "productName": "mosaicModule",
+    "subpartsQuantity": 10,
+    "metrics": {
+        "status": "In Progress",
+        "startTime": null,
+        "endTime": null,
+        "processTime": null
+    },
+    "assembly": {
+        "operation1": {
+            "data": {
+                "machineID": "module1",
+                "assemblyParent": "mosaic",
+                "part": "mosaicBase",
+                "color": "yellow",
+                "queuePosition": null,
+                "scheduledOpStart": null,
+                "scheduledOpEnd": null,
+                "AGVstartPos": "unknownStartPos",
+                "AGVendPos": "unknownEndPos"
+            },
+            "metrics": {
+                "status": "In progress",
+                "realOpStart": "unknownScheduledStart",
+                "realOpEnd": "unknownScheduledEnd"
+            }
+        },
+        "operation2": {
+            "data": {
+                "machineID": "module1",
+                "assemblyParent": "mosaic",
+                "part": "mosaicOne",
+                "color": "yellow",
+                "queuePosition": null,
+                "scheduledOpStart": null,
+                "scheduledOpEnd": null,
+                "AGVstartPos": "unknownStartPos",
+                "AGVendPos": "unknownEndPos"
+            },
+            "metrics": {
+                "status": "In progress",
+                "realOpStart": "unknownScheduledStart",
+                "realOpEnd": "unknownScheduledEnd"
+            }
+        },
+        "operation3": {
+            "data": {
+                "machineID": "module1",
+                "assemblyParent": "mosaic",
+                "part": "mosaicTwo",
+                "color": "yellow",
+                "queuePosition": null,
+                "scheduledOpStart": null,
+                "scheduledOpEnd": null,
+                "AGVstartPos": "unknownStartPos",
+                "AGVendPos": "unknownEndPos"
+            },
+            "metrics": {
+                "status": "In progress",
+                "realOpStart": "unknownScheduledStart",
+                "realOpEnd": "unknownScheduledEnd"
+            }
+        },
+        "operation4": {
+            "data": {
+                "machineID": "module1",
+                "assemblyParent": "mosaic",
+                "part": "mosaicThree",
+                "color": "yellow",
+                "queuePosition": null,
+                "scheduledOpStart": null,
+                "scheduledOpEnd": null,
+                "AGVstartPos": "unknownStartPos",
+                "AGVendPos": "unknownEndPos"
+            },
+            "metrics": {
+                "status": "In progress",
+                "realOpStart": "unknownScheduledStart",
+                "realOpEnd": "unknownScheduledEnd"
+            }
+        },
+        "operation5": {
+            "data": {
+                "machineID": "module1",
+                "assemblyParent": "mosaic",
+                "part": "mosaicFour",
+                "color": "yellow",
+                "queuePosition": null,
+                "scheduledOpStart": null,
+                "scheduledOpEnd": null,
+                "AGVstartPos": "unknownStartPos",
+                "AGVendPos": "unknownEndPos"
+            },
+            "metrics": {
+                "status": "In progress",
+                "realOpStart": "unknownScheduledStart",
+                "realOpEnd": "unknownScheduledEnd"
+            }
+        },
+        "operation6": {
+            "data": {
+                "machineID": "module1",
+                "assemblyParent": "mosaic",
+                "part": "mosaicFive",
+                "color": "yellow",
+                "queuePosition": null,
+                "scheduledOpStart": null,
+                "scheduledOpEnd": null,
+                "AGVstartPos": "unknownStartPos",
+                "AGVendPos": "unknownEndPos"
+            },
+            "metrics": {
+                "status": "In progress",
+                "realOpStart": "unknownScheduledStart",
+                "realOpEnd": "unknownScheduledEnd"
+            }
+        },
+        "operation7": {
+            "data": {
+                "machineID": "module1",
+                "assemblyParent": "mosaic",
+                "part": "mosaicSix",
+                "color": "yellow",
+                "queuePosition": null,
+                "scheduledOpStart": null,
+                "scheduledOpEnd": null,
+                "AGVstartPos": "unknownStartPos",
+                "AGVendPos": "unknownEndPos"
+            },
+            "metrics": {
+                "status": "In progress",
+                "realOpStart": "unknownScheduledStart",
+                "realOpEnd": "unknownScheduledEnd"
+            }
+        },
+        "operation8": {
+            "data": {
+                "machineID": "module1",
+                "assemblyParent": "mosaic",
+                "part": "mosaicSeven",
+                "color": "yellow",
+                "queuePosition": null,
+                "scheduledOpStart": null,
+                "scheduledOpEnd": null,
+                "AGVstartPos": "unknownStartPos",
+                "AGVendPos": "unknownEndPos"
+            },
+            "metrics": {
+                "status": "In progress",
+                "realOpStart": "unknownScheduledStart",
+                "realOpEnd": "unknownScheduledEnd"
+            }
+        },
+        "operation9": {
+            "data": {
+                "machineID": "module1",
+                "assemblyParent": "mosaic",
+                "part": "mosaicEight",
+                "color": "yellow",
+                "queuePosition": null,
+                "scheduledOpStart": null,
+                "scheduledOpEnd": null,
+                "AGVstartPos": "unknownStartPos",
+                "AGVendPos": "unknownEndPos"
+            },
+            "metrics": {
+                "status": "In progress",
+                "realOpStart": "unknownScheduledStart",
+                "realOpEnd": "unknownScheduledEnd"
+            }
+        },
+        "operation10": {
+            "data": {
+                "machineID": "module1",
+                "assemblyParent": "mosaic",
+                "part": "mosaicNine",
+                "color": "yellow",
+                "queuePosition": null,
+                "scheduledOpStart": null,
+                "scheduledOpEnd": null,
+                "AGVstartPos": "unknownStartPos",
+                "AGVendPos": "unknownEndPos"
+            },
+            "metrics": {
+                "status": "In progress",
+                "realOpStart": "unknownScheduledStart",
+                "realOpEnd": "unknownScheduledEnd"
+            }
+        }
+    }
+}
