@@ -2,7 +2,7 @@
 
 <!-- markdownlint-disable MD033 -->
 <p align="center">
-  <img src="repo_image.jpg" alt="Repo logo" width="200">
+  <img src="repo_image.jpg" alt="Repo logo" width="300">
 </p>
 <!-- markdownlint-enable MD033 -->
 
