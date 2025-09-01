@@ -90,12 +90,27 @@ def update_order_data(order, credentials):
 
 
 def get_next_operations(credentials, order, sorted_operations):
-    """_summary_ TO ŠE NAPIŠI
+    """Determine which operations can be executed next based on their status, 
+    dependencies, and module availability.
+
+    This function groups operations by module, checks whether modules are 
+    currently blocked (e.g., due to processing, waiting for transport, or 
+    transport in progress), and then selects the next eligible operation 
+    for each module. It first prioritizes transport operations and blocks 
+    modules involved in those, and then schedules normal operations if 
+    their dependencies are satisfied and the module is not blocked.
 
     Args:
-        credentials (_type_): JSON file with credentials and other details of production and AMR modules.
-        order (_type_): Dictionary of operations and a header in an order.
-        sorted_operations (_type_): List of operations sorted by a function "sort_operations_by_queue_position(order)".
+        credentials (dict): JSON-like dictionary containing module details 
+            (e.g., production and AMR modules).
+        order (dict): Dictionary describing the order, including product 
+            data and associated operations.
+        sorted_operations (list): List of all operations sorted by their 
+            queue position, used for dependency checks.
+
+    Returns:
+        list: A list of operation dictionaries representing the next 
+        operations that can be executed.
     """
     try:
         modules = credentials["module_details"]
