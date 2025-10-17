@@ -1,7 +1,7 @@
 #this is a file for reading attributes of a device from thingsboard
 import requests
 
-def read_attribute(username, password, device_id, thingsboard_url, attribute_key):
+def read_attribute(username, password, device_id, thingsboard_url, attribute_key, return_ts=False):
     """
     This function reads the TB attribute from TB. The data read in this file is production order
     from "Virtual device" and signals from modules and AGVs (NodeRed1, NodeRed2, AGV).
@@ -56,8 +56,9 @@ def read_attribute(username, password, device_id, thingsboard_url, attribute_key
     jwt_token = get_jwt_token()
     #print("jwt token obtained: ", jwt_token)
     if jwt_token:
-        local_variable = read_client_attributes(jwt_token)[0]["value"]
-        return local_variable
+        resp = read_client_attributes(jwt_token)
+        item = resp[0] if resp else {"value": {}, "lastUpdateTs": None}
+        return item["value"] if not return_ts else {"value": item["value"], "ts": item.get("lastUpdateTs")}
 
 
 
