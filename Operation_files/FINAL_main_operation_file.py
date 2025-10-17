@@ -1,4 +1,4 @@
-#this is a new MES python file which is created on foundation of the previous MES file ("MES_python_file.py and FINAL_MES.py") which is too much hardcoded
+#this is a new MES python file which is created on foundation of the previous MES file ("MES_python_file.py and FINAL_MES.py") which are too much hardcoded
 
 import logging
 import requests
@@ -7,6 +7,8 @@ import json
 from datetime import datetime
 import traceback
 import threading
+import os
+from typing import Dict, Any
 
 import FINAL_read_attribute as read
 import FINAL_update_attribute as update
@@ -14,6 +16,30 @@ import FINAL_data_manipulation as manipulation
 import FINAL_assembly_operations as assembly
 import FINAL_transport_operations as transport
 import FINAL_setup as setup
+import logging_functions as logging
+
+IDEAL_TIMES = {"101": 2.5, "102": 2.0, "103": 3.0, "104": 2.0, "105": 1.5,
+                "module1:trainBase": 2.5, "module1:trainWheels": 2.0,
+                "module2:trainEngine": 3.0, "module2:trainCabin": 2.0,
+                "module3:trainChimney": 1.5}
+
+def _transport_closed(op: dict) -> bool:
+    d, m = op.get("data", {}) or {}, op.get("metrics", {}) or {}
+    if _is_final_op(op):
+        return m.get("finalTransport") == "Done"
+    # začetni/vmesni
+    return bool(m.get("transportEndTs"))
+    
+def _is_true(v) -> bool:
+    """Robustno pretvori TB/DN vrednost v bool."""
+    if isinstance(v, bool):   return v
+    if isinstance(v, (int,float)): return v == 1
+    if isinstance(v, str):    return v.strip().lower() in ("true","1","yes","y")
+    return False
+
+def _is_final_op(op: dict) -> bool:
+    d = op.get("data", {}) or {}
+    return _is_true(d.get("endFlag", False))  # privzeto False, če zastavice ni
 
 # SETUP
 with open('FINAL_credentials.json', 'r') as cred:
@@ -29,16 +55,18 @@ PASSWORD = credentials["thingsboard_data"]["password"]
 VIRTUAL_DEVICE_ID = credentials["misc_details"]["virtual_device"]["device_id"]
 THINGSBOARD_URL = credentials["thingsboard_data"]["tb_url"]
 
-setup.setup()
+setup.setup(credentials)
 
 done = False  # stopping variable
 transport_operations = []
+start_trans_operations = []
+end_trans_operations = []
 
 try:
     while not done:
         print("\n=== New main loop ===")
 
-        # 1️⃣ Read latest order data from TB
+        # Read latest order data from TB
         order_data = read.read_attribute(
             USERNAME,
             PASSWORD,
@@ -47,11 +75,16 @@ try:
             "productionOrder"
         )
         
-        if order_data != {}:
+        if order_data:
             print("Order data read from TB.")
+            #
+            logging.mark_order_start(order_data)
+            #
             #print(f"Check order data: {order_data}")
-
-            # 2️⃣ Read current states & operations from each module
+            
+            order_data = manipulation.update_order_data(order=order_data, credentials=credentials)
+            
+            # Read current states & operations from each module
             previous_operations_status = {}
             current_module_states = {}
             for i in module_keys:
@@ -70,10 +103,12 @@ try:
                                         "currentOperation")["metrics"]["status"]
                 )
 
-            # 3️⃣ Sort and get next operations
+            # Sort and get next operations
             try:
                 sorted_operations = manipulation.sort_operations_by_queue_position(order_data)
-
+                
+                order_data = manipulation.tag_final_ops_with_endflag(order_data)
+                
                 operations_list = manipulation.get_next_operations(
                     credentials=credentials,
                     order=order_data,
@@ -88,10 +123,23 @@ try:
 
                     current_module = i["data"]["machineID"] if i else None
                     print(f"Current module {current_module}")
+                    status_now = i["metrics"].get("status")
 
-                    needs_transport = (i["data"]["AGVstartPos"] != "null" and i["data"]["AGVendPos"] != "null")
+                    d = i.get("data", {}) or {}
+                    start_pos = d.get("AGVstartPos", "null")
+                    end_pos   = d.get("AGVendPos", "null")
 
-                    if needs_transport and i["metrics"]["status"] != "Transport done":
+                    is_final       = _is_final_op(i)  # varno, tudi če endFlag manjka
+                    needs_transport = (start_pos != "null" and end_pos != "null" and status_now != "Finished")
+                    start_trans     = (start_pos == "null" and end_pos != "null")
+                    end_trans       = (is_final)  # semantika; fazo preveriš posebej z metrics
+                    
+                    m = i.get("metrics", {}) or {}
+                    final_ready = is_final and (m.get("status") == "Finished" or m.get("finalTransport") == "InProgress")
+                    
+                    
+
+                    if needs_transport and i["metrics"]["status"] != "Transport done" and not _transport_closed(i):
                         print("Transport needed!")
                         #TUKAJ NAŠTUDIRAJ KAKO DRUGAČE NAREDITI DA GRE ČE JE TRANSPORTING NAJ GA DA NAPREJ V SEZNAMU
                         # mark as processing when dispatched
@@ -100,31 +148,29 @@ try:
                         transport_operations.insert(0, i)
                         continue
 
-                    elif (i["data"]["AGVstartPos"] == "null" and i["data"]["AGVendPos"] != "null"):
+                    elif start_trans and i["metrics"]["status"] != "Transport done" and not _transport_closed(i):
                         print("ZACETNI TRANSPORT")
-                        i["metrics"]["status"] = "Processing"
-                        update.update_attribute(
-                            USERNAME, PASSWORD,
-                            credentials["module_details"][i["data"]["machineID"]]["device_id"],
-                            THINGSBOARD_URL,
-                            "currentOperation", i
-                        )
-                        time.sleep(2)
+                        start_trans_operations.insert(0, i)
+                        time.sleep(0.5)
+                        continue
 
-                    elif (i["data"]["AGVstartPos"] != "null" and i["data"]["AGVendPos"] == "null"):
-                        print("KONCNI TRANSPORT")
-                        i["metrics"]["status"] = "Processing"
-                        update.update_attribute(
-                            USERNAME, PASSWORD,
-                            credentials["module_details"][i["data"]["machineID"]]["device_id"],
-                            THINGSBOARD_URL,
-                            "currentOperation", i
-                        )
-                        time.sleep(2)
+                    elif final_ready and not _transport_closed(i):
+                        print("skozi končni elif!!!")
+                        
+                        task = manipulation.build_final_transport_task(i, default_agv=i["data"]["AGV"])
+                        task["metrics"]["status"] = "Finished"
 
-                    else:
+                        print("KONČNI TRANSPORT JEBEM TI MATER")
+                        end_trans_operations.insert(0, task)
+                        time.sleep(0.5)
+                        continue
+                    
+                    elif status_now in ("Waiting", "Transport done"):
                         print("NAVADNA OPERACIJA")
                         i["metrics"]["status"] = "Processing"
+                        #
+                        logging.stamp_operation_metrics(i["metrics"], new_status="Processing")
+                        #
                         update.update_attribute(
                             USERNAME, PASSWORD,
                             credentials["module_details"][i["data"]["machineID"]]["device_id"],
@@ -133,7 +179,7 @@ try:
                         )
                         time.sleep(0.5)
 
-                # 5️⃣ Run active transports
+                # Run active transports
                 if transport_operations:
                     transport_operations, completed_operations, order_data = transport.transport_operation_between_modules(transport_operations, credentials, order_data)
                     for completed_op in completed_operations:
@@ -152,19 +198,60 @@ try:
                     except Exception as e:
                         print(f"Error updating TB order data: {e}")
                         traceback.print_exc()
-            
-                # 6️⃣ Update order data in TB if something finished
+
+                #dodaj za začetni in končni transport?
+                if start_trans_operations:
+                    print("DEJANSKO IZVAJAMO TRANSPORT!!!!!!!!!!")
+                    start_trans_operations, start_completed_operations, order_data = transport.start_transport(start_trans_operations, credentials, order_data)
+                    for completed_op in start_completed_operations:
+                        # Find and update the operation in order_data
+                        for product in order_data["productData"][0]["products"]:
+                            for op_id, op_data in product["assembly"].items():
+                                if op_data["data"]["uniqueOpID"] == completed_op["data"]["uniqueOpID"]:
+                                    # Update the operation in order_data
+                                    product["assembly"][op_id] = completed_op
+                                    print(f"Updated operation {completed_op['data']['uniqueOpID']} in order_data to status: {completed_op['metrics']['status']}")
+                                    break
+                    try:
+                        #print(f"Check order data: {order_data}")
+                        manipulation.update_order_data(order=order_data, credentials=credentials)
+                    except Exception as e:
+                        print(f"Error updating TB order data: {e}")
+                        traceback.print_exc()
+                        
+                if end_trans_operations:
+                    print("IZVAJAMO KONČNI TRANSPORT…")
+                    end_trans_operations, end_completed_operations, order_data = transport.end_transport(end_trans_operations, credentials, order_data)
+                    print(end_trans_operations)
+                    for completed_op in end_completed_operations:
+                        uid = completed_op["data"]["uniqueOpID"]
+                        for product in order_data["productData"][0]["products"]:
+                            for op_id, op_data in product["assembly"].items():
+                                if op_data["data"]["uniqueOpID"] == uid:
+                                    op_m = op_data.setdefault("metrics", {})
+                                    # prepiši relevantne metrike
+                                    op_m.update({
+                                        "status": "End transport done",
+                                        "finalTransport": "Done",
+                                        # če želiš prenesti še vožnjo
+                                        "transportStartTs": completed_op["metrics"].get("transportStartTs", op_m.get("transportStartTs")),
+                                        "transportEndTs":   completed_op["metrics"].get("transportEndTs",   op_m.get("transportEndTs")),
+                                    })
+                                    print(f"Updated FINAL transport for {uid} to: {op_m['status']} (lock={op_m.get('finalTransport')})")
+                                    break
+                    try:
+                        #print(f"Check order data: {order_data}")
+                        manipulation.update_order_data(order=order_data, credentials=credentials)
+                    except Exception as e:
+                        print(f"Error updating TB order data: {e}")
+                        traceback.print_exc()
+                
+                # Update order data in TB if something finished
                 try:
                     # Refresh order_data to get the latest statuses from ThingsBoard
-                    order_data = read.read_attribute(
-                        USERNAME,
-                        PASSWORD,
-                        VIRTUAL_DEVICE_ID,
-                        THINGSBOARD_URL,
-                        "productionOrder"
-                    )
+                    
                     #print(f"Check order data: {order_data}")
-                    manipulation.update_order_data(order=order_data, credentials=credentials)
+                    order_data = manipulation.update_order_data(order=order_data, credentials=credentials)
                 except Exception as e:
                     print(f"Error updating TB order data: {e}")
                     traceback.print_exc()
@@ -173,41 +260,53 @@ try:
                 print(f"Error in main loop: {e}")
                 traceback.print_exc()
 
-            # 7️⃣ Check if production is finished
-            all_finished = True
+            # Check if production is finished – upošteva 'endFlag' + 'Transport done'
+            # === Strict completion check across products ===
             try:
-                for product in order_data["productData"][0]["products"]:
-                    for op_id, op_data in product["assembly"].items():
-                        if op_data["metrics"]["status"] != "Finished":
-                            all_finished = False
-                            break
-                    if not all_finished:
-                        break
+                ready, blockers = manipulation.is_order_ready_to_close(order_data)
             except Exception as e:
-                print(e)
-
-            if all_finished:
-                if order_data != {}:
-                    update.update_attribute(USERNAME, 
-                                            PASSWORD, 
-                                            VIRTUAL_DEVICE_ID, 
-                                            THINGSBOARD_URL, 
-                                            "finishedOrder", 
-                                            order_data)
-                time.sleep(0.1)
+                print(f"[WARN] completion check failed: {e}")
+                ready, blockers = False, [("n/a", "exception")]
                 
-                update.update_attribute(USERNAME, 
-                                        PASSWORD, 
-                                        VIRTUAL_DEVICE_ID, 
-                                        THINGSBOARD_URL, 
-                                        "productionOrder", 
-                                        {})
+            # minimal guard
+            #any_endflags_left = any(
+                #op.get("data", {}).get("endFlag") for p in order_data["productData"][0]["products"]
+                #for op in p.get("assembly", {}).values()
+            #)
+
+            #buffers_busy = bool(transport_operations or start_trans_operations or end_trans_operations)
+            buffers_busy = False
+
+            if not ready or buffers_busy:
+                if buffers_busy:
+                    print("[INFO] Order not done; transport buffers not empty.")
+                if blockers:
+                    print("[INFO] Order not done; per-product blockers:")
+                    for idx, why in blockers:
+                        print(f"  - product#{idx}: {why}")
+            else:
+                # Pred zaprtjem DN: pretvori vse finalne op iz 'End transport done' -> 'Finished' + endTs
+                for product in order_data["productData"][0]["products"]:
+                    for _k, op in product["assembly"].items():
+                        d, m = op.get("data", {}), op.get("metrics", {})
+                        if d.get("endFlag") is True and m.get("status") == "End transport done":
+                            logging.stamp_operation_metrics(m, new_status="Finished")
+                            #m["status"] = "Finished"
+
+                # standardni zaključni koraki
+                logging.mark_order_end(order_data)
+                if order_data != {}:
+                    update.update_attribute(USERNAME, PASSWORD, VIRTUAL_DEVICE_ID, THINGSBOARD_URL, "finishedOrder", order_data)
+                time.sleep(0.1)
+                extra = logging.summarize_for_kpi(order_data, ideal_times=IDEAL_TIMES)
+                logging.save_finished_order(order_data, out_dir="finished_orders", write_jsonl=True, extra_summary=extra)
+                update.update_attribute(USERNAME, PASSWORD, VIRTUAL_DEVICE_ID, THINGSBOARD_URL, "productionOrder", {})
                 sorted_operations = []
                 order_data = None
                 print("Production order finished")
         else:
             print("No order submitted!")
-        # 8️⃣ Wait before next cycle
+        # Wait before next cycle
         time.sleep(1) #TO SKRAJŠAJ KO ZAKLJUČIŠ IN STESTIRAJ NA KRAJŠE CIKLE LOOPA
 
 except KeyboardInterrupt:
@@ -216,14 +315,18 @@ except KeyboardInterrupt:
 
 print("Script finished")
 
-#Tole spodaj je dober način za filtriranje ali bomo transportiral ter kam in kako 
 """
-start = i["data"].get("AGVstartPos")
-end   = i["data"].get("AGVendPos")
+# 3.b Zgradi končne transporte za izdelke, ki so končani (endFlag=True & status=Finished)
+                final_trans_to_add = []
+                for product in order_data["productData"][0]["products"]:
+                    for _k, op in product["assembly"].items():
+                        d = op.get("data", {}); m = op.get("metrics", {})
+                        if d.get("endFlag") is True and m.get("status") == "Finished":
+                            # preveri, da še NI bil narejen končni transport (tj. ni 'transport done' v tej finalni nalogi)
+                            already_has = (d.get("AGVstartPos") == d.get("machineID") and d.get("AGVendPos") == "null" and m.get("status") in ("Transporting", "Waiting", "Waiting for transport", "Transport done"))
+                            if not already_has:
+                                final_trans_to_add.append(manipulation.build_final_transport_task(op, default_agv="AGV1"))
 
-if not start and end:
-    # start transport
-elif start and not end:
-    # end transport
-
+                # 3.c Dodaj v 'end_trans_operations' buffer
+                end_trans_operations.extend(final_trans_to_add) 
 """

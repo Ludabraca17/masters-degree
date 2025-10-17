@@ -4,15 +4,15 @@ import FINAL_update_attribute as update
 import json
 
 
-def setup():
+def setup(credentials):
     """
     Function that completes the setup of the system before the start.
 
     There is a possibility of an error in case some of the modules that are present in credentials file are not online.
     """
 
-    with open('FINAL_credentials.json', 'r') as cred:
-        credentials = json.load(cred)["credentials"]
+    #with open('FINAL_credentials.json', 'r') as cred:
+        #credentials = json.load(cred)["credentials"]
 
     module_keys = credentials["module_details"].keys()
     agv_keys = credentials["AGV_details"].keys()
