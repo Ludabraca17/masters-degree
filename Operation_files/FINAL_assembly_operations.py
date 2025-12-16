@@ -1,4 +1,4 @@
-#this file contains functions for assembly operations
+#this file contains functions for assembly operations which are not being utilized right now
 import FINAL_update_attribute as update
 #import FINAL_data_manipulation as manipulation
 

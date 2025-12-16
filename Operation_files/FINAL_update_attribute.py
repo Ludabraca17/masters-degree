@@ -2,11 +2,26 @@
 
 import requests
 
-def update_attribute(username, password, device_id, thingsboard_url, attribute_key, attribute_value):
+def update_attribute(username: int, 
+                    password: int, 
+                    device_id: int, 
+                    thingsboard_url: int, 
+                    attribute_key: int, 
+                    attribute_value: int) -> None:
     """
-    This function updates the TB attribute on TB. It can be used for updating current state of the order (times,
-    positions, etc.) as well as current states of modules and AGVs ("idle", "callibrating", "processing", "error")
-    and their command messages.
+    Function updates a specific attribute on a ThingsBoard device.
+    
+    This function updates the TB attribute on TB. It utilizes the REST API of ThingsBoard. 
+    It can be used for updating current state of the order (times, positions, etc.) as well as 
+    current states of modules and AGVs ("idle", "callibrating", "processing", "error") and their command messages.
+
+    Args:
+        username (int): Username of the TB user.
+        password (int): Password of the TB user.
+        device_id (int): ID of the device from which the attribute is to be read.
+        thingsboard_url (int): URL of the ThingsBoard instance.
+        attribute_key (int): Key of the attribute to be read.
+        attribute_value (int): Value which we want to set for the attribute.
     """
 
     def update_shared_attributes(jwt_token):
@@ -19,11 +34,9 @@ def update_attribute(username, password, device_id, thingsboard_url, attribute_k
             attribute_key: attribute_value
         }
 
-        #print(f"Updating attributes with payload: {payload}")
         response = requests.post(url, json=payload, headers=headers)
 
         if response.status_code == 200:
-            #print("Attributes updated successfully.")
             pass
         else:
             print(f"Failed to update attributes. Status Code: {response.status_code}, Response: {response.text}")
@@ -45,7 +58,6 @@ def update_attribute(username, password, device_id, thingsboard_url, attribute_k
 
         if response.status_code == 200:
             token = response.json().get("token")
-            #print(f"JWT Token obtained: {token}")
             return token
         else:
             print(f"Failed to authenticate. Status Code: {response.status_code}, Response: {response.text}")

@@ -1,15 +1,31 @@
 #this is a file for reading attributes of a device from thingsboard
 import requests
 
-def read_attribute(username, password, device_id, thingsboard_url, attribute_key, return_ts=False):
+def read_attribute(username: int, 
+                    password: int, 
+                    device_id: int, 
+                    thingsboard_url: int, 
+                    attribute_key: int, 
+                    return_ts=False) -> dict:
     """
-    This function reads the TB attribute from TB. The data read in this file is production order
-    from "Virtual device" and signals from modules and AGVs (NodeRed1, NodeRed2, AGV).
-    """
+    Function reads a specific attribute from a ThingsBoard device.
+    
+    This function reads the TB attribute from TB. It utilizes the REST API of ThingsBoard. Inputs are presented below. It returns
+    the value of the attribute key provided in the input.
 
+    Args:
+        username (int): Username of the TB user.
+        password (int): Password of the TB user.
+        device_id (int): ID of the device from which the attribute is to be read.
+        thingsboard_url (int): URL of the ThingsBoard instance.
+        attribute_key (int): Key of the attribute to be read.
+        return_ts (bool, optional): If True, returns the timestamp along with the value. Defaults to False.
+
+    Returns:
+        dict: Dictionary containing the attribute value, and optionally the timestamp.
+    """
     # Client attributes to be read
     attributes_to_read = [attribute_key]  # Replace with the attributes you want to read
-    #print("debug print - start of function")
 
     def read_client_attributes(jwt_token):
         url = f"{thingsboard_url}/api/plugins/telemetry/DEVICE/{device_id}/values/attributes"
@@ -24,7 +40,6 @@ def read_attribute(username, password, device_id, thingsboard_url, attribute_key
         response = requests.get(url, headers=headers, params=params)
 
         if response.status_code == 200:
-            #print(f"Attribute {attribute_key} read successfully.")
             return response.json()
         else:
             print(f"Failed to read attributes. Status Code: {response.status_code}, Response: {response.text}")
@@ -46,7 +61,6 @@ def read_attribute(username, password, device_id, thingsboard_url, attribute_key
 
         if response.status_code == 200:
             token = response.json().get("token")
-            #print(f"JWT Token obtained: {token}")
             return token
         else:
             print(f"Failed to authenticate. Status Code: {response.status_code}, Response: {response.text}")
@@ -54,7 +68,6 @@ def read_attribute(username, password, device_id, thingsboard_url, attribute_key
 
     # Main logic
     jwt_token = get_jwt_token()
-    #print("jwt token obtained: ", jwt_token)
     if jwt_token:
         resp = read_client_attributes(jwt_token)
         item = resp[0] if resp else {"value": {}, "lastUpdateTs": None}

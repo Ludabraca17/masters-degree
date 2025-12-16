@@ -5,18 +5,18 @@ import copy
 import traceback
 from typing import Dict, Any, Tuple, List
 
-def sort_operations_by_queue_position(order):
+def sort_operations_by_queue_position(order: dict) -> list:
     """
     This function takes the entire order and extracts the operations from it.
-    The operations are sorted primarily by "queuePosition". If two operations have the same queuePosition,
+    The operations are sorted primarily by "queuePosition". If two operations have the same "queuePosition",
     they are further sorted by "uniqueOpID" to ensure a consistent order.
     The function returns a flat list of operations.
 
     Args:
-        order (_type_): Dictionary of operations and a header in an order.
+        order (dict): Dictionary of operations and a header in an order.
 
     Returns:
-        _type_: List of operations sorted by queuePosition and uniqueOpID.
+        list: List of operations sorted by queuePosition and uniqueOpID.
     """
     new_operations = []
     try:
@@ -38,10 +38,20 @@ def sort_operations_by_queue_position(order):
 
     return sorted_operations
 
-def update_order_data(order, credentials):
+def update_order_data(
+        order: dict, 
+        credentials: dict
+        ) -> dict:
     """
-    Reads the current operation which is finished or processing and updates the order_data.
-    If the order changes, updates the TB attribute 'productionOrder'.
+    Reads the current operation for each possible module and finds if there was any change for operations that are in the order.
+    If the order changes, it updates the TB attribute "productionOrder" with the updated order. Updated order is then returned.
+
+    Args:
+        order (dict): Entire production order which is to be updated to ThingsBoard.
+        credentials (dict): Credentials for ThingsBoard access.
+
+    Returns:
+        dict: Updated order so that the data is synced with ThingsBoard.
     """
     import copy
     import FINAL_read_attribute as read
@@ -82,73 +92,89 @@ def update_order_data(order, credentials):
         current_op_status = current.get("metrics", {}).get("status")
         print(f"Current operation status for {i}: {current_op_status}")
 
-        # podpiraj tudi 'Waiting for transport'
+        # podpiraj tudi "Waiting for transport"
         if current_op_status in ("Finished", "Processing", "Transporting", "Transport done", "Waiting for transport"):
             current_op = current  # že prebrano zgoraj
             op_ident = current_op["data"]["uniqueOpID"]
-            incoming_uid = current.get("data", {}).get("orderUID") or current.get("data", {}).get("orderId")
-            print(f"Updating active module {i} operation ID: {op_ident} | incoming orderUID={incoming_uid} expected={expected_pid}")
-            
-            # --- 1) primary guard: exact order ID match if present ---
-            if expected_pid and incoming_uid and incoming_uid != expected_pid:
-                print(f"[SKIP] Module {i} op {op_ident} belongs to {incoming_uid}, not this order {expected_pid}.")
-                continue
+            if not _has_real_iso(current_op.get("metrics", {})):
+                print(f"[SKIP] Finished op {op_ident} on module {i} lacks real ISO timestamps; treating as stale.")
+                break
+            else:
+                incoming_uid = current.get("data", {}).get("orderUID") or current.get("data", {}).get("orderId")
+                print(f"Updating active module {i} operation ID: {op_ident} | incoming orderUID={incoming_uid} expected={expected_pid}")
+                
+                # --- 1) primary guard: exact order ID match if present ---
+                if expected_pid and incoming_uid and incoming_uid != expected_pid:
+                    print(f"[SKIP] Module {i} op {op_ident} belongs to {incoming_uid}, not this order {expected_pid}.")
+                    continue
 
-            # --- 2) fallback guard: strict ISO-based staleness check (NO normalization yet) ---
-            if isinstance(order_start_ts, (int, float)) and not _belongs_to_this_order_strict(current, order_start_ts):
-                print(f"[SKIP] Module {i} op {op_ident} appears stale by ISO timestamps.")
-                continue
-            
-            # --- NADGRADNJE (idempotentno, brez ‘merge’) ---
-            # 1) iz NR ISO -> *Ts (ms), če manjkajo
-            if "metrics" in current_op:
-                normalize_op_times_from_real(current_op["metrics"])  # ne prepiše obstoječih ms žigov
-                # 2) ISO ogledala za Pythonove ms žige (berljivo v končnem DN)
-                ms_start = current_op["metrics"].get("startTs")
-                ms_end   = current_op["metrics"].get("endTs")
-                if ms_start is not None:
-                    iso = _ms_to_iso_utc(ms_start)
-                    if iso is not None:
-                        current_op["metrics"].setdefault("startTsIso", iso)
-                if ms_end is not None:
-                    iso = _ms_to_iso_utc(ms_end)
-                    if iso is not None:
-                        current_op["metrics"].setdefault("endTsIso", iso)
-                # 3) kakovost ob Finished, če manjka
-                if current_op_status == "Finished":
-                    ensure_quality_default(current_op["metrics"], default="OK")
-            # --- konec nadgradenj ---
+                # --- 2) fallback guard: strict ISO-based staleness check (NO normalization yet) ---
+                if isinstance(order_start_ts, (int, float)) and not _belongs_to_this_order_strict(current, order_start_ts):
+                    print(f"[SKIP] Module {i} op {op_ident} appears stale by ISO timestamps.")
+                    continue
+                
+                # --- NADGRADNJE (idempotentno, brez ‘merge’) ---
+                # 1) iz NR ISO -> *Ts (ms), če manjkajo
+                if "metrics" in current_op:
+                    normalize_op_times_from_real(current_op["metrics"])  # ne prepiše obstoječih ms žigov
+                    # 2) ISO ogledala za Pythonove ms žige (berljivo v končnem DN)
+                    ms_start = current_op["metrics"].get("startTs")
+                    ms_end   = current_op["metrics"].get("endTs")
+                    if ms_start is not None:
+                        iso = _ms_to_iso_utc(ms_start)
+                        if iso is not None:
+                            current_op["metrics"].setdefault("startTsIso", iso)
+                    if ms_end is not None:
+                        iso = _ms_to_iso_utc(ms_end)
+                        if iso is not None:
+                            current_op["metrics"].setdefault("endTsIso", iso)
+                    # 3) kakovost ob Finished, če manjka
+                    if current_op_status == "Finished":
+                        ensure_quality_default(current_op["metrics"], default="OK")
+                # --- konec nadgradenj ---
 
-            op_ident = current_op["data"]["uniqueOpID"]
-            print(f"Updating active module {i} operation ID: {op_ident}")
+                op_ident = current_op["data"]["uniqueOpID"]
+                print(f"Updating active module {i} operation ID: {op_ident}")
 
-            for product in order_data["productData"][0]["products"]:
-                for op_id, op_data in product["assembly"].items():
-                    
-                    if op_data["data"]["uniqueOpID"] == op_ident:
-                        if not _belongs_to_this_order_strict(current_op, order_start_ts): #PAZI NA TO!!!! mogoče zbriši
-                            print(f"[SKIP] Stale op {op_ident} on module {i} (from previous order).")
+                for product in order_data["productData"][0]["products"]:
+                    for op_id, op_data in product["assembly"].items():
+                        
+                        if op_data["data"]["uniqueOpID"] == op_ident:
+                            if not _belongs_to_this_order_strict(current_op, order_start_ts): #PAZI NA TO!!!! mogoče zbriši
+                                print(f"[SKIP] Stale op {op_ident} on module {i} (from previous order).")
+                                break
+                            existing = product["assembly"][op_id]
+                            end_lock = existing.get("metrics", {}).get("finalTransport")
+                            is_end_active = (
+                                existing.get("data", {}).get("AGVendPos") == "null" and
+                                existing.get("metrics", {}).get("status") in ("Waiting","Waiting for transport","Transporting")
+                            )
+
+                            # NE prepisuj, če teče end transport, ali če je že označen kot Done
+                            if is_end_active or end_lock in ("InProgress", "Done"):
+                                print(f"[SKIP] preserve final-transport for uid={op_ident} ({end_lock})")
+                            else:
+                                product["assembly"][op_id] = current_op
                             break
-                        existing = product["assembly"][op_id]
-                        end_lock = existing.get("metrics", {}).get("finalTransport")
-                        is_end_active = (
-                            existing.get("data", {}).get("AGVendPos") == "null" and
-                            existing.get("metrics", {}).get("status") in ("Waiting","Waiting for transport","Transporting")
-                        )
-
-                        # NE prepisuj, če teče end transport, ali če je že označen kot Done
-                        if is_end_active or end_lock in ("InProgress", "Done"):
-                            print(f"[SKIP] preserve final-transport for uid={op_ident} ({end_lock})")
-                        else:
-                            product["assembly"][op_id] = current_op
-                        break
 
     # Pošlji posodobljen productionOrder v TB
     update.update_attribute(USERNAME, PASSWORD, VIRTUAL_DEVICE_ID, THINGSBOARD_URL, "productionOrder", order_data)
     print("Order data has been pushed to ThingsBoard.")
     return order_data
 
-def tag_final_ops_with_endflag(order: Dict[str, Any]) -> Dict[str, Any]:
+def tag_final_ops_with_endflag(
+        order: Dict[str, Any]
+        ) -> Dict[str, Any]:
+    """
+    Takes the order and finds final operations for each product. It then adds an "endFlag": "True" to the data of the final operation.
+    That is later used to indicate end transport operations.
+    
+    Args:
+        order (dict): Production order containing products and their operations.
+
+    Returns:
+        dict: Production order with final operations tagged with "endFlag": "True".
+    """
     try:
         pd0 = order.get("productData", [{}])[0]
         for product in pd0.get("products", []):
@@ -170,13 +196,25 @@ def tag_final_ops_with_endflag(order: Dict[str, Any]) -> Dict[str, Any]:
         print(f"[WARN] tag_final_ops_with_endflag failed: {e}")
     return order
 
-def build_final_transport_task(op: Dict[str, Any], default_agv: str = "AGV1") -> Dict[str, Any]:
+def build_final_transport_task(
+        op: dict, 
+        default_agv: str = "AGV1"
+        ) -> dict:
     """
-    Iz 'zadnje' operacije (z endFlag=True) zgradi transportno nalogo:
-    - AGVstartPos = machineID operacije
-    - AGVendPos   = "null"  (končni odvoz, brez ciljnega modula)
-    - AGV         = default_agv ali op.data.AGV, če obstaja
-    - metrics.status = "Waiting" (da vstopi v end_transport state machine)
+    Builds a final transport task from an "end" operation (where endFlag=True).
+
+    The task is formed as follows:
+    - AGVstartPos = operation"s machineID
+    - AGVendPos   = "null" (represents "out of factory", not yet implemented)
+    - AGV         = default_agv, unless op.data contains a specific AGV
+    - metrics.status = "Finished" (signals an end-transport task)
+
+    Args:
+        op (dict): Operation marked as final (with endFlag=True).
+        default_agv (str, optional): Default AGV to use if the operation does not provide one.
+
+    Returns:
+        dict: A transport task containing updated "data" and "metrics".
     """
     d = dict(op.get("data", {}))
     m = dict(op.get("metrics", {}))
@@ -195,12 +233,21 @@ def build_final_transport_task(op: Dict[str, Any], default_agv: str = "AGV1") ->
     }
     return task
 
-def is_order_completed_with_final_transport(order: Dict[str, Any]) -> bool:
+def is_order_completed_with_final_transport(order: dict) -> bool:
     """
-    DN je zaključen, ko:
-        - za vse 'navadne' operacije (brez endFlag) velja metrics.status == 'Finished'
-        - za operacijo z endFlag == True velja metrics.status == 'Transport done'
-            (sprejmemo tudi 'Finished' kot 'NI še narejen končni transport' -> v tem primeru vrnemo False)
+    Checks if the entire production order is completed, including final transport.
+    
+    Production order is considered completed if:
+    - for all normal operations (without endFlag), metrics.status == "Finished",
+    - for the operation with endFlag == True, metrics.status == "Transport done".
+    
+    Production order is NOT considered completed if operations with endFlag == True have status Finished.
+
+    Args:
+        order (dict): Current production order.
+
+    Returns:
+        bool: True if the order is completed with final transport, False otherwise.
     """
     try:
         products = order.get("productData", [{}])[0].get("products", [])
@@ -214,52 +261,80 @@ def is_order_completed_with_final_transport(order: Dict[str, Any]) -> bool:
             status = m.get("status", "")
 
             if d.get("endFlag") == "True":
-                # za finalno operacijo je 'Transport done' edino stanje, ki šteje kot dokončano
+                # za finalno operacijo je "Transport done" edino stanje, ki šteje kot dokončano
                 if status != "End transport done":
                     return False
             else:
-                # za ostale operacije zahtevamo 'Finished'
+                # za ostale operacije zahtevamo "Finished"
                 if status != "Finished":
                     return False
     return True
 
-def _get_products(order: Dict[str, Any]) -> List[Dict[str, Any]]:
+def _get_products(order: dict) -> List[Dict[str, Any]]:
+    """Returns the list of products from the order dictionary."""
     return order.get("productData", [{}])[0].get("products", [])
 
-def _is_product_completed_with_end_done(product: Dict[str, Any]) -> Tuple[bool, str]:
+def _is_product_completed_with_end_done(product: dict) -> Tuple[bool, str]:
     """
-    Produkt je 'completed' IFF:
-        - vse operacije brez endFlag: status == 'Finished'
-        - operacija z endFlag == True: status == 'End transport done'  (ne 'Transport done')
-    Vrne (ok, razlog_če_ne).
+    Function takes the product from an order and checks if it is completed including final transport.
+    
+    Product is completed if:
+    - all operations without endFlag: status == "Finished" AND have realOpStart/realOpEnd (ISO) != unknown/null
+    - operation with endFlag == True: status == "End transport done" AND have realOpStart/realOpEnd (ISO) != unknown/null
+
+    Args:
+        product (dict): Product from an order.
+
+    Returns:
+        tuple: (ok: bool, why: str) - True if completed, False otherwise with reason.
     """
     assembly = product.get("assembly", {})
     has_final = False
     final_ok = False
+
     for _k, op in assembly.items():
         d = op.get("data", {})
         m = op.get("metrics", {})
         s = m.get("status", "")
+
         if d.get("endFlag") == "True":
             has_final = True
-            # samo končni odvoz šteje kot zaključek produkta
-            if s == "End transport done":
-                final_ok = True
-            else:
-                return (False, f"final-op status={s!r} (expected 'End transport done')")
+
+            # 1) final status must be End transport done
+            if s != "End transport done":
+                return (False, f"final-op status={s!r} (expected End transport done)")
+
+            # 2) and we insist that real assembly ISO stamps are real (not leftovers)
+            if not _has_real_iso(m):
+                return (False, "final-op missing real ISO assembly times")
+
+            final_ok = True
+
         else:
+            # normal ops must be Finished AND have real ISO assembly stamps
             if s != "Finished":
-                return (False, f"op {d.get('uniqueOpID')} @ {d.get('machineID')} status={s!r} (expected 'Finished')")
+                return (False, f"op {d.get('uniqueOpID')} @ {d.get('machineID')} status={s!r} (expected Finished)")
+            if not _has_real_iso(m):
+                return (False, f"op {d.get('uniqueOpID')} missing real ISO assembly times")
+
     if not has_final:
         return (False, "missing endFlag op")
     if not final_ok:
-        return (False, "final op not 'End transport done'")
+        return (False, "final op not End transport done")
     return (True, "")
 
-def is_order_ready_to_close(order: Dict[str, Any]) -> Tuple[bool, list]:
+def is_order_ready_to_close(order: dict) -> Tuple[bool, list]:
     """
-    DN je pripravljen za zaprtje, ko so VSI produkti 'completed' po zgornjem pravilu.
-    Vrne (ok, blockers[]) za diagnostiko.
+    Check if all of the operations in the order are finished.
+    
+    Takes the order and checks if each product within the order is completed including final transport.
+    If so it returns a True value, otherwise False along with a list of blockers indicating which products are not yet complete.
+    
+    Args:
+        order (dict): Entire production order.
+
+    Returns:
+        tuple: (bool, list): True if order is ready to close, False otherwise with list of blockers.
     """
     blockers = []
     for idx, p in enumerate(_get_products(order), start=1):
@@ -268,36 +343,45 @@ def is_order_ready_to_close(order: Dict[str, Any]) -> Tuple[bool, list]:
             blockers.append((idx, why))
     return (len(blockers) == 0, blockers)
 
-def get_next_operations(credentials, order, sorted_operations):
+def _has_real_iso(m: dict) -> bool:
     """
-    Izbor naslednjih operacij po modulih na osnovi statusov, odvisnosti in zasedenosti modulov.
-    Uporablja že pripravljeno globalno urejenost `sorted_operations` (uniqueOpID, queuePosition).
-    
-    # --- Predblokiranje zaradi TRANSPORTOV ---
-        for module, ops in operations_by_module.items():
-            for op in ops:
-                d = op.get("data", {}); m = op.get("metrics", {})
-                status = m.get("status")
-                start_pos = d.get("AGVstartPos")
-                end_pos   = d.get("AGVendPos")
+    Checks if the metrics dictionary has real ISO timestamps for operation start and end.
 
-                # (1) med-modulski transport v čakanju: blokiraj start in cilj
-                if status == "Waiting for transport" and start_pos != "null" and end_pos != "null":
-                    blocked_modules.add(start_pos); blocked_modules.add(end_pos)
+    Args:
+        m (dict): Metrics dictionary from an operation.
 
-                # (2) ZAČETNI transport (AGVstartPos=="null"): rezerviraj ciljni modul
-                if start_pos == "null" and end_pos in modules and status in {"Waiting", "Waiting for transport", "Transporting"}:
-                    blocked_modules.add(end_pos)
-                    # (neobvezno) beleženje najnižjega UID začetnega transporta za override
-                    uid = int(d.get("uniqueOpID", 10**9))
-                    if (end_pos not in initial_block_uid) or (uid < initial_block_uid[end_pos]):
-                        initial_block_uid[end_pos] = uid
+    Returns:
+        bool: True if both realOpStart and realOpEnd are valid ISO timestamps, False otherwise.
+    """
+    def ok(x):
+        if x is None: return False
+        if not isinstance(x, str): return False
+        s = x.strip().lower()
+        if not s or s == "null" or s.startswith("unknown"):
+            return False
+        return True
+    return ok(m.get("realOpStart")) and ok(m.get("realOpEnd"))
+
+def get_next_operations(sorted_operations: list, credentials: dict) -> list:
+    """
+    Selects the next operations by modules based on statuses, dependencies, and module occupancy.
     
+    Funciton takes the pre-sorted list of operations and credentials containing module details and select 
+    possible next operations to execute. First it checks for possible transport operations and then for regular assembly operations.
+    It selects operations on basis if their modules are currently blocked by other operations or not. The selected 
+    operations are returned as a list and are differentiated if they are transport or assembly operations later in the main loop.
+
+    Args:
+        sorted_operations (list): List of operations sorted by queuePosition and uniqueOpID.
+        credentials (dict): Credentials for ThingsBoard access.
+
+    Returns:
+        list: List of next operations to execute.
     """
     try:
         modules = credentials["module_details"]
 
-        # Košare po modulih v NATANČNEM vrstnem redu iz `sorted_operations`
+        # Lists of modules in EXACT order from `sorted_operations`
         operations_by_module = {m: [] for m in modules}
         for op in sorted_operations:
             mid = op.get("data", {}).get("machineID")
@@ -309,11 +393,11 @@ def get_next_operations(credentials, order, sorted_operations):
         blocked_modules = set()
         initial_block_uid = {}  # (če že imaš ta del v tvoji zadnji verziji, pusti)
 
-        # Blokirne množice
-        blocking_statuses_normal = {"Processing", "Waiting for transport"}          # brez 'Transport done'
+        # Blocking statuses - PREVERI ALI SO POTREBNE
+        blocking_statuses_normal = {"Processing", "Waiting for transport"}          
         blocking_statuses_transport = {"Processing", "Waiting for transport", "Transporting"}
         
-        # --- PRE-BLOCK: zablokiraj module zaradi AKTIVNIH transportov ---
+        # --- PRE-BLOCK: block modules which have active transport operations ---
         for op in sorted_operations:
             d = op.get("data", {}); m = op.get("metrics", {})
             status = m.get("status")
@@ -321,7 +405,7 @@ def get_next_operations(credentials, order, sorted_operations):
             end_flag = d.get("endFlag") == "True"
             is_initial = (start_pos == "null" and end_pos in modules)
             is_inter   = (start_pos in modules and end_pos in modules)
-            #is_final   = (start_pos in modules and end_pos == "null" and end_flag)
+            #is_final   = (start_pos in modules and end_pos == "null" and end_flag) PREVERI
 
             if status in {"Waiting for transport", "Transporting"}:
                 if is_inter:
@@ -329,18 +413,16 @@ def get_next_operations(credentials, order, sorted_operations):
                 elif is_initial:
                     blocked_modules.add(end_pos)
                 elif is_final:
-                    blocked_modules.add(start_pos)
+                    blocked_modules.add(start_pos) #PREVERI
 
-        # --- PRVI PREHOD: načrtuj TRANSPORTE ---
+        # --- FIRST PASS: planning of transports ---
         for module, ops in operations_by_module.items():
-            #if any(o.get("metrics", {}).get("status") in blocking_statuses_transport for o in ops):
-                #continue
-
-            def earlier_unfinished_on_module(candidate):
+            def earlier_unfinished_on_module(candidate: dict) -> bool:
+                """Check if there are earlier unfinished operations on the same module as the candidate operation and return True if found."""
                 cuid = int(candidate.get("data", {}).get("uniqueOpID", 10**9))
                 for o in ops:
                     ouid = int(o.get("data", {}).get("uniqueOpID", 10**9))
-                    if ouid < cuid and o.get("metrics", {}).get("status") != "Finished":
+                    if ouid < cuid and o.get("metrics", {}).get("status") not in ("Finished", "End transport done"):
                         return True
                 return False
 
@@ -349,95 +431,87 @@ def get_next_operations(credentials, order, sorted_operations):
                 status = m.get("status")
                 start_pos = d.get("AGVstartPos"); end_pos = d.get("AGVendPos")
 
-                # dovoljen vstop v transport: Waiting / Transport done / Finished (za sintetiko končnega)
-                if status not in {"Waiting", "Transport done", "Finished"}:
+                # Allowed statuses for transport: Waiting / Transport done / Finished
+                if status not in {"Waiting", "Finished"}:
                     continue
 
                 end_flag = d.get("endFlag") == "True"
                 is_final_candidate = (
                     end_flag
                     and status == "Finished"
-                    #and d.get("AGVstartPos") in modules
-                    #and d.get("AGVendPos") == "null"
                     and m.get("finalTransport") not in {"InProgress", "Done"}
                 )
 
-                # ➊ Če je to končna operacija po montaži → jo prepustimo kot transportno nalogo
+                # If this is a final operation after assembly → allow it as a transport task
                 if is_final_candidate:
                     next_operations.append(op)
-                    # rezerviraj izvorni modul, da v istem ciklu ne dobi še montaže
+                    # Reserve the source module so that it does not get assembly in the same cycle
                     blocked_modules.add(d.get("AGVstartPos"))
-                    break  # ena naloga na modul
+                    break  # Only one operation per module
 
-                # ➋ Vse ostale 'Finished' transporte preskočimo kot prej
+                # Skip over transports that are already Finished as before
                 if status == "Finished":
                     continue
 
-                # ---- NOVO: tipizacija transporta (dovolimo tudi KONČNI transport zapisa) ----
+                # Set transport type based on start/end positions and endFlag
                 is_transport = not (start_pos == "null" and end_pos == "null")
                 if not is_transport:
-                    continue
-                is_initial = (start_pos == "null" and end_pos in modules)
-                is_inter   = (start_pos in modules and end_pos in modules)
-                # KONČNI transport zapis: start v modulu, end == "null" in endFlag=True
-                is_final   = (start_pos in modules and end_pos == "null" and end_flag)
+                    continue # Not a transport operation
+                is_initial = (start_pos == "null" and end_pos in modules) # Start transport operation
+                is_inter   = (start_pos in modules and end_pos in modules) # Inter-module transport
+                is_final   = (start_pos in modules and end_pos == "null" and end_flag) # End transport operation
 
                 if not (is_initial or is_inter or is_final):
-                    continue
+                    continue #TO RES RABIM???
 
-                # UID pravilo po modulu
+                # If there are earlier unfinished operations on this module, skip
                 if earlier_unfinished_on_module(op):
                     continue
 
-                # Odvisnosti po assemblyParent (po uniqueOpID)
+                # Check if product assembly order blocks this operation (uniqueOpID dependencies)
                 cur_parent = d.get("assemblyParent"); cur_uid = int(d.get("uniqueOpID", 10**9))
                 deps_block = any(
                     (so.get("data", {}).get("assemblyParent") == cur_parent) and
                     (int(so.get("data", {}).get("uniqueOpID", 10**9)) < cur_uid) and
-                    (so.get("metrics", {}).get("status") != "Finished")
+                    (so.get("metrics", {}).get("status") not in ("Finished", "End transport done"))
                     for so in sorted_operations
                 )
                 if deps_block:
                     continue
 
-                # izberi transport in pravilno blokiraj module
+                # Pick the available transport operation in block the modules that are involved in the transport
                 next_operations.append(op)
                 if is_inter:
-                    blocked_modules.add(start_pos); blocked_modules.add(end_pos)
+                    blocked_modules.add(start_pos); blocked_modules.add(end_pos) # Reserves both source and target modules
                 elif is_initial:
-                    blocked_modules.add(end_pos)    # rezerviraj cilj
-                else:  # is_final
-                    blocked_modules.add(start_pos)  # odpeljemo s stroja, cilj ni modul
-                break  # ena transportna naloga na modul
-
-        # --- DRUGI PREHOD: NAVADNE operacije (prednost: 'Transport done') ---
+                    blocked_modules.add(end_pos)    # Reserves the target module
+                else:  
+                    blocked_modules.add(start_pos)  # Reserves the source module
+                break  # Only one operation per module
+            
+        print("[DBG] blocked_modules after transport pass:", blocked_modules)
+        
+        # --- SECOND PASS: regular assembly operations ---
         for module, ops in operations_by_module.items():
             if module in blocked_modules:
-                # Dovoli montažo, če je prednostna (nižji UID od rezerviranega začetnega transporta)
-                min_uid = initial_block_uid.get(module, 10**9)
-                # poišči najbolj zgodnjo kandidatko na modulu
-                maybe = min((int(o["data"].get("uniqueOpID", 10**9)) for o in ops if o["metrics"].get("status") in ("Transport done","Waiting")
-                            and (o["data"].get("AGVstartPos")=="null" and o["data"].get("AGVendPos")=="null")), default=10**9)
-                if maybe < min_uid:
-                    pass  # ne prekinjaj; dovoli 2. prehod za ta modul
-                else:
+                # If any op on this module is "Transport done", allow assembly despite block
+                if not any(o.get("metrics", {}).get("status") == "Transport done" for o in ops):
                     continue
 
-            #if any(o.get("metrics", {}).get("status") in blocking_statuses_normal for o in ops):
-                #continue
-
-            def earlier_unfinished_exists(candidate):
+            def earlier_unfinished_exists(candidate: dict) -> bool:
+                """Check if there are earlier unfinished operations on the same module as the candidate operation and return True if found."""
                 cuid = int(candidate.get("data", {}).get("uniqueOpID", 10**9))
                 for o in ops:
                     ouid = int(o.get("data", {}).get("uniqueOpID", 10**9))
-                    if ouid < cuid and o.get("metrics", {}).get("status") != "Finished":
+                    if ouid < cuid and o.get("metrics", {}).get("status") not in ("Finished", "End transport done"):
                         return True
                 return False
 
             chosen = None
-            # 1) prednostno: 'Transport done'
+            # 1) Priority status: "Transport done"
             for op in ops:
                 d = op.get("data", {}); m = op.get("metrics", {})
+                print("[DBG] asm @", module, [(o["data"]["uniqueOpID"], o["metrics"].get("status")) for o in ops])
                 if m.get("status") != "Transport done":
                     continue
                 if earlier_unfinished_exists(op):
@@ -446,29 +520,31 @@ def get_next_operations(credentials, order, sorted_operations):
                 deps_block = any(
                     (so.get("data", {}).get("assemblyParent") == cur_parent) and
                     (int(so.get("data", {}).get("uniqueOpID", 10**9)) < cur_uid) and
-                    (so.get("metrics", {}).get("status") != "Finished")
+                    (so.get("metrics", {}).get("status") not in ("Finished", "End transport done"))
                     for so in sorted_operations
                 )
                 if not deps_block:
                     chosen = op
                     break
 
-            # 2) sicer: 'Waiting' NE-transport
+            # 2) Otherwise: "Waiting" no transport at all in this operation
             if chosen is None:
                 for op in ops:
                     d = op.get("data", {}); m = op.get("metrics", {})
                     if m.get("status") != "Waiting":
                         continue
-                    is_transport = not (d.get("AGVstartPos") == "null" and d.get("AGVendPos") == "null")
-                    if is_transport:
-                        continue
+                    # "Transport done" should be considered assembly regardless of AGV fields
+                    if m.get("status") != "Transport done":
+                        is_transport = not (d.get("AGVstartPos")=="null" and d.get("AGVendPos")=="null")
+                        if is_transport:
+                            continue
                     if earlier_unfinished_exists(op):
                         continue
                     cur_parent = d.get("assemblyParent"); cur_uid = int(d.get("uniqueOpID", 10**9))
                     deps_block = any(
                         (so.get("data", {}).get("assemblyParent") == cur_parent) and
                         (int(so.get("data", {}).get("uniqueOpID", 10**9)) < cur_uid) and
-                        (so.get("metrics", {}).get("status") != "Finished")
+                        (so.get("metrics", {}).get("status") not in ("Finished", "End transport done"))
                         for so in sorted_operations
                     )
                     if not deps_block:
@@ -491,9 +567,8 @@ def get_next_operations(credentials, order, sorted_operations):
         print(f"[ERROR] Exception in get_next_operations: {e}")
         import traceback; traceback.print_exc()
         
-    #diagnostika ker ne štarta op204
+    #diagnostika ker ne štarta op204 ODSTRANI?
     if not next_operations:
         print("[DBG] get_next: no ops; blocked_modules=", blocked_modules)
-        print("[DBG] module2 set:", [(o["data"]["uniqueOpID"], o["metrics"]["status"]) 
-                                    for o in operations_by_module.get("module2", [])])
+        print("[DBG] module2 set:", [(o["data"]["uniqueOpID"], o["metrics"]["status"]) for o in operations_by_module.get("module2", [])])
     return next_operations
