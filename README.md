@@ -21,3 +21,6 @@ The system uses a credential.json file which is not provided for safety reasons.
 
 Specific information about the system operation is available in the thesis on the link below:
 - https://repozitorij.uni-lj.si/IzpisGradiva.php?id=176120&lang=slv
+
+When running the .ps1 scripts you might be prompted to change the execution policy:
+- Set-ExecutionPolicy -Scope CurrentUser -ExecutionPolicy RemoteSigned
