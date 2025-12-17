@@ -1,0 +1,2884 @@
+[
+    {
+        "id": "c3c083f5bb5e3e97",
+        "type": "tab",
+        "label": "Calibration flow",
+        "disabled": false,
+        "info": "Calibration flow",
+        "env": []
+    },
+    {
+        "id": "be5f5f9b4915c031",
+        "type": "tab",
+        "label": "Modular flow",
+        "disabled": false,
+        "info": "Modular flow",
+        "env": []
+    },
+    {
+        "id": "1137166cdcd75077",
+        "type": "tab",
+        "label": "Transport flow",
+        "disabled": false,
+        "info": "Transport flow",
+        "env": []
+    },
+    {
+        "id": "bf610bbabc9ed441",
+        "type": "group",
+        "z": "c3c083f5bb5e3e97",
+        "name": "Subscribing to MQTT data from ThingsBoard attributes",
+        "style": {
+            "stroke": "#ffff00",
+            "fill": "#ffffbf",
+            "label": true,
+            "label-position": "s",
+            "color": "#000000"
+        },
+        "nodes": [
+            "25057930e9b03e18",
+            "5c97968deaac23ac",
+            "93fe370f6980db28"
+        ],
+        "x": 54,
+        "y": 19,
+        "w": 542,
+        "h": 90
+    },
+    {
+        "id": "5ba4446bc7b6d518",
+        "type": "group",
+        "z": "c3c083f5bb5e3e97",
+        "name": "Module callibration",
+        "style": {
+            "stroke": "#ff0000",
+            "fill": "#ffbfbf",
+            "label": true
+        },
+        "nodes": [
+            "0977cc488943ecbf",
+            "0fc2568e6d98dad6",
+            "ef687cc57e212f43",
+            "3af95c59fe3c4d14",
+            "931af811331737b0",
+            "7f96bd42f49178d1",
+            "80146e5add039481",
+            "eb8f33dc54d29849",
+            "75ae118d87387fe0",
+            "23cfaa7850d8dc68",
+            "29bcf059a7f7cf9d",
+            "e46afe6dc4bb5495",
+            "f1a562e6adb64bad"
+        ],
+        "x": 514,
+        "y": 159,
+        "w": 912,
+        "h": 329.5
+    },
+    {
+        "id": "3aabd14b15b13b29",
+        "type": "group",
+        "z": "c3c083f5bb5e3e97",
+        "name": "Preparing logic for calibration",
+        "style": {
+            "stroke": "#92d04f",
+            "fill": "#e3f3d3",
+            "label": true,
+            "label-position": "s",
+            "color": "#000000"
+        },
+        "nodes": [
+            "dd1eeede3f7c23b0",
+            "dff5d058c63494e7",
+            "70bca07442f733be"
+        ],
+        "x": 54,
+        "y": 199,
+        "w": 432,
+        "h": 90
+    },
+    {
+        "id": "24a3af8555d44995",
+        "type": "group",
+        "z": "be5f5f9b4915c031",
+        "name": "Saving production order to global variable",
+        "style": {
+            "stroke": "#001f60",
+            "fill": "#bfdbef",
+            "label": true,
+            "label-position": "s",
+            "color": "#000000"
+        },
+        "nodes": [
+            "da94840355fbe857",
+            "6900de354579dd90",
+            "55a4d8b1484b01b2"
+        ],
+        "x": 54,
+        "y": 239,
+        "w": 572,
+        "h": 90
+    },
+    {
+        "id": "fb1ce016058df793",
+        "type": "group",
+        "z": "be5f5f9b4915c031",
+        "name": "Communications - uploading to TB",
+        "style": {
+            "stroke": "#ffff00",
+            "fill": "#ffffbf",
+            "label": true,
+            "label-position": "s",
+            "color": "#000000"
+        },
+        "nodes": [
+            "03258f1ba41c7503",
+            "d512f3e7b22dfb71"
+        ],
+        "x": 704,
+        "y": 239,
+        "w": 342,
+        "h": 90
+    },
+    {
+        "id": "7d338acab4991d1a",
+        "type": "group",
+        "z": "be5f5f9b4915c031",
+        "name": "Uploading updated production order to ThingsBoard",
+        "style": {
+            "stroke": "#ffC000",
+            "fill": "#ffefbf",
+            "label": true,
+            "label-position": "s",
+            "color": "#000000"
+        },
+        "nodes": [
+            "796daf4d95d43d6e",
+            "12c694c1b98c4a8c",
+            "41a3d87b47752764"
+        ],
+        "x": 734,
+        "y": 79,
+        "w": 582,
+        "h": 90
+    },
+    {
+        "id": "8a593e49482fa67b",
+        "type": "group",
+        "z": "be5f5f9b4915c031",
+        "name": "Assembly loop",
+        "style": {
+            "stroke": "#001f60",
+            "fill": "#bfc7d7",
+            "label": true,
+            "label-position": "s",
+            "color": "#000000"
+        },
+        "nodes": [
+            "4c6f3a3776c708b2",
+            "0f7d988e1ee0bab1",
+            "b328f63c602e16ef",
+            "b4263e856bc27527",
+            "2ffab6c52026e078",
+            "ed2ebbfee8e4e0e9",
+            "51d5731c3e799bc0",
+            "5fca30e17bed0785",
+            "56873e073f03dbe9"
+        ],
+        "x": 54,
+        "y": 387,
+        "w": 2188,
+        "h": 1250
+    },
+    {
+        "id": "0a14218ec5fede02",
+        "type": "group",
+        "z": "1137166cdcd75077",
+        "name": "Communications - uploading to TB",
+        "style": {
+            "stroke": "#ffff00",
+            "fill": "#ffffbf",
+            "label": true,
+            "label-position": "s",
+            "color": "#000000"
+        },
+        "nodes": [
+            "6e8df731dd9e1398",
+            "d49cc0ee6a0eac59",
+            "9a49a30562c17df2"
+        ],
+        "x": 224,
+        "y": 19,
+        "w": 342,
+        "h": 170
+    },
+    {
+        "id": "f648ac36cb254b91",
+        "type": "group",
+        "z": "be5f5f9b4915c031",
+        "name": "Check parts count on module and report to ThingsBoard",
+        "style": {
+            "stroke": "#6f2fa0",
+            "fill": "#b797cf",
+            "label": true,
+            "label-position": "s",
+            "color": "#000000"
+        },
+        "nodes": [
+            "c18199a48da03c08",
+            "20e36c900c8f74e3",
+            "65a16cdc63021c25",
+            "c3fcf85d56000a49",
+            "eb5910290722519c"
+        ],
+        "x": 1094,
+        "y": 231.5,
+        "w": 952,
+        "h": 105
+    },
+    {
+        "id": "0f7d988e1ee0bab1",
+        "type": "group",
+        "z": "be5f5f9b4915c031",
+        "g": "8a593e49482fa67b",
+        "name": "ThingsBoard status updating",
+        "style": {
+            "label": true,
+            "stroke": "#777777",
+            "fill": "#ffffff",
+            "label-position": "s",
+            "color": "#000000"
+        },
+        "nodes": [
+            "54c45d4e798811cb",
+            "e792024ffcc07dac",
+            "110bc66d224fbec4",
+            "10aff01a12c0638f",
+            "58659442d6de6f77",
+            "3e4a2903da8c1426",
+            "0c64bfcbfdbd6f6c",
+            "ae87fef065604491",
+            "897f27ed0fcaee0e",
+            "7f0f0531e101c12a",
+            "e60b9434167cda8c"
+        ],
+        "x": 1244,
+        "y": 419,
+        "w": 662,
+        "h": 230
+    },
+    {
+        "id": "b328f63c602e16ef",
+        "type": "group",
+        "z": "be5f5f9b4915c031",
+        "g": "8a593e49482fa67b",
+        "name": "Updating production order global variable with data after assembly",
+        "style": {
+            "stroke": "#6f2fa0",
+            "fill": "#dbcbe7",
+            "label": true,
+            "label-position": "s",
+            "color": "#000000"
+        },
+        "nodes": [
+            "68ec249cd61ca9c9",
+            "b15978b8aa4ba228",
+            "30c3efe6bff9db8b",
+            "8d529d1ba7c2d312"
+        ],
+        "x": 1244,
+        "y": 659,
+        "w": 972,
+        "h": 90
+    },
+    {
+        "id": "b4263e856bc27527",
+        "type": "group",
+        "z": "be5f5f9b4915c031",
+        "g": "8a593e49482fa67b",
+        "name": "trainModule",
+        "style": {
+            "stroke": "#000000",
+            "fill": "#bfbfbf",
+            "label": true,
+            "label-position": "s",
+            "color": "#000000"
+        },
+        "nodes": [
+            "e7ae517193fe020c",
+            "a162a1235bad15b5"
+        ],
+        "x": 568,
+        "y": 413,
+        "w": 644,
+        "h": 370
+    },
+    {
+        "id": "2ffab6c52026e078",
+        "type": "group",
+        "z": "be5f5f9b4915c031",
+        "g": "8a593e49482fa67b",
+        "name": "shipModule",
+        "style": {
+            "stroke": "#000000",
+            "fill": "#bfbfbf",
+            "label": true,
+            "label-position": "s",
+            "color": "#000000"
+        },
+        "nodes": [
+            "e85269b4dfcd047e",
+            "1cbc8794dd6b6918",
+            "4462d8bfe82aa87f"
+        ],
+        "x": 568,
+        "y": 833,
+        "w": 778,
+        "h": 370
+    },
+    {
+        "id": "ed2ebbfee8e4e0e9",
+        "type": "group",
+        "z": "be5f5f9b4915c031",
+        "g": "8a593e49482fa67b",
+        "name": "mosaicModule",
+        "style": {
+            "stroke": "#000000",
+            "fill": "#bfbfbf",
+            "label": true,
+            "label-position": "s",
+            "color": "#000000"
+        },
+        "nodes": [
+            "3f979471495335a4",
+            "64950b6fbfbbd0fe",
+            "329ffbb2c41fa793"
+        ],
+        "x": 568,
+        "y": 1233,
+        "w": 758,
+        "h": 370
+    },
+    {
+        "id": "e7ae517193fe020c",
+        "type": "group",
+        "z": "be5f5f9b4915c031",
+        "g": "b4263e856bc27527",
+        "name": "Assembly ",
+        "style": {
+            "stroke": "#ff0000",
+            "fill": "#ffbfbf",
+            "label": true,
+            "label-position": "s",
+            "color": "#000000"
+        },
+        "nodes": [
+            "fc0a3e0a3a571c38",
+            "25a052a3136b7e9f",
+            "2e0fd26e1b428b99",
+            "2e53005ce7937618",
+            "8251766f45a418ee"
+        ],
+        "x": 594,
+        "y": 539,
+        "w": 412,
+        "h": 210
+    },
+    {
+        "id": "a162a1235bad15b5",
+        "type": "group",
+        "z": "be5f5f9b4915c031",
+        "g": "b4263e856bc27527",
+        "name": "Preparing order data for assembly",
+        "style": {
+            "stroke": "#92d04f",
+            "fill": "#e3f3d3",
+            "label": true,
+            "label-position": "s",
+            "color": "#000000"
+        },
+        "nodes": [
+            "db5c66866218cdeb",
+            "d069450465565e3c",
+            "27dcedbac03da195"
+        ],
+        "x": 594,
+        "y": 439,
+        "w": 592,
+        "h": 90
+    },
+    {
+        "id": "e85269b4dfcd047e",
+        "type": "group",
+        "z": "be5f5f9b4915c031",
+        "g": "2ffab6c52026e078",
+        "name": "Preparing order data for assembly",
+        "style": {
+            "stroke": "#92d04f",
+            "fill": "#e3f3d3",
+            "label": true,
+            "label-position": "s",
+            "color": "#000000"
+        },
+        "nodes": [
+            "a4b58d5526a9c449",
+            "41b2e33eab53304e",
+            "d50de5d8c11d4f22"
+        ],
+        "x": 594,
+        "y": 859,
+        "w": 592,
+        "h": 90
+    },
+    {
+        "id": "1cbc8794dd6b6918",
+        "type": "group",
+        "z": "be5f5f9b4915c031",
+        "g": "2ffab6c52026e078",
+        "name": "Assembly ",
+        "style": {
+            "stroke": "#ff0000",
+            "fill": "#ffbfbf",
+            "label": true,
+            "label-position": "s",
+            "color": "#000000"
+        },
+        "nodes": [
+            "e9a41265fd282a5c",
+            "90acc85c442ce8d1",
+            "2332d581f442f92b",
+            "808eb6078d6a2b52",
+            "fa6361fc8ec37345",
+            "deb8fc46c75cb541"
+        ],
+        "x": 594,
+        "y": 959,
+        "w": 412,
+        "h": 210
+    },
+    {
+        "id": "3f979471495335a4",
+        "type": "group",
+        "z": "be5f5f9b4915c031",
+        "g": "ed2ebbfee8e4e0e9",
+        "name": "Preparing order data for assembly",
+        "style": {
+            "stroke": "#92d04f",
+            "fill": "#e3f3d3",
+            "label": true,
+            "label-position": "s",
+            "color": "#000000"
+        },
+        "nodes": [
+            "165208ba67b51436",
+            "b74e2a22060eb82c",
+            "d48ed3667650307e"
+        ],
+        "x": 594,
+        "y": 1259,
+        "w": 592,
+        "h": 90
+    },
+    {
+        "id": "64950b6fbfbbd0fe",
+        "type": "group",
+        "z": "be5f5f9b4915c031",
+        "g": "ed2ebbfee8e4e0e9",
+        "name": "Assembly ",
+        "style": {
+            "stroke": "#ff0000",
+            "fill": "#ffbfbf",
+            "label": true,
+            "label-position": "s",
+            "color": "#000000"
+        },
+        "nodes": [
+            "084660e6346335eb",
+            "2a79426399f92635",
+            "33acf51d2d95392d",
+            "a5b1441ca3ad3789",
+            "23738ce5667c5524"
+        ],
+        "x": 594,
+        "y": 1359,
+        "w": 412,
+        "h": 210
+    },
+    {
+        "id": "ec403f0572624cab",
+        "type": "mqtt-broker",
+        "name": "MQTT_DC2",
+        "broker": "192.168.9.108 ",
+        "port": 1883,
+        "clientid": "7a2re3bjyiyic8biwt64",
+        "autoConnect": true,
+        "usetls": false,
+        "protocolVersion": 4,
+        "keepalive": 60,
+        "cleansession": true,
+        "autoUnsubscribe": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthRetain": "true",
+        "birthPayload": "",
+        "birthMsg": {},
+        "closeTopic": "",
+        "closeQos": "0",
+        "closeRetain": "false",
+        "closePayload": "",
+        "closeMsg": {},
+        "willTopic": "",
+        "willQos": "0",
+        "willRetain": "false",
+        "willPayload": "",
+        "willMsg": {},
+        "userProps": "",
+        "sessionExpiry": ""
+    },
+    {
+        "id": "25057930e9b03e18",
+        "type": "mqtt in",
+        "z": "c3c083f5bb5e3e97",
+        "g": "bf610bbabc9ed441",
+        "name": "",
+        "topic": "v1/devices/me/attributes",
+        "qos": "0",
+        "datatype": "json",
+        "broker": "ec403f0572624cab",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 190,
+        "y": 60,
+        "wires": [
+            [
+                "93fe370f6980db28"
+            ]
+        ]
+    },
+    {
+        "id": "5c97968deaac23ac",
+        "type": "link out",
+        "z": "c3c083f5bb5e3e97",
+        "g": "bf610bbabc9ed441",
+        "name": "link out 3",
+        "mode": "link",
+        "links": [
+            "70bca07442f733be",
+            "d78e2596c5ccebb5",
+            "da94840355fbe857",
+            "c37e220376157281"
+        ],
+        "x": 555,
+        "y": 60,
+        "wires": []
+    },
+    {
+        "id": "0977cc488943ecbf",
+        "type": "exec",
+        "z": "c3c083f5bb5e3e97",
+        "g": "5ba4446bc7b6d518",
+        "command": "python /home/pi/Desktop/FW_DOBOT/modularAssembly/dobot_calibrate_5G.py",
+        "addpay": "",
+        "append": "",
+        "useSpawn": "false",
+        "timer": "",
+        "winHide": false,
+        "oldrc": false,
+        "name": "Calibration python",
+        "x": 630,
+        "y": 280,
+        "wires": [
+            [
+                "3af95c59fe3c4d14",
+                "7f96bd42f49178d1"
+            ],
+            [
+                "0fc2568e6d98dad6"
+            ],
+            [
+                "ef687cc57e212f43"
+            ]
+        ]
+    },
+    {
+        "id": "dd1eeede3f7c23b0",
+        "type": "switch",
+        "z": "c3c083f5bb5e3e97",
+        "g": "3aabd14b15b13b29",
+        "name": "",
+        "property": "payload.Callibration",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "true",
+                "vt": "str"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 1,
+        "x": 410,
+        "y": 240,
+        "wires": [
+            [
+                "0977cc488943ecbf",
+                "eb8f33dc54d29849",
+                "75ae118d87387fe0"
+            ]
+        ]
+    },
+    {
+        "id": "0fc2568e6d98dad6",
+        "type": "debug",
+        "z": "c3c083f5bb5e3e97",
+        "g": "5ba4446bc7b6d518",
+        "name": "error",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 850,
+        "y": 280,
+        "wires": []
+    },
+    {
+        "id": "ef687cc57e212f43",
+        "type": "debug",
+        "z": "c3c083f5bb5e3e97",
+        "g": "5ba4446bc7b6d518",
+        "name": "return code",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 870,
+        "y": 340,
+        "wires": []
+    },
+    {
+        "id": "dff5d058c63494e7",
+        "type": "change",
+        "z": "c3c083f5bb5e3e97",
+        "g": "3aabd14b15b13b29",
+        "name": "",
+        "rules": [
+            {
+                "t": "change",
+                "p": "payload.Callibration",
+                "pt": "msg",
+                "from": "true",
+                "fromt": "bool",
+                "to": "true",
+                "tot": "str"
+            },
+            {
+                "t": "change",
+                "p": "payload.Callibration",
+                "pt": "msg",
+                "from": "false",
+                "fromt": "bool",
+                "to": "false",
+                "tot": "str"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 220,
+        "y": 240,
+        "wires": [
+            [
+                "dd1eeede3f7c23b0"
+            ]
+        ]
+    },
+    {
+        "id": "931af811331737b0",
+        "type": "link out",
+        "z": "c3c083f5bb5e3e97",
+        "g": "5ba4446bc7b6d518",
+        "name": "link out 14",
+        "mode": "link",
+        "links": [
+            "d512f3e7b22dfb71"
+        ],
+        "x": 1145,
+        "y": 240,
+        "wires": []
+    },
+    {
+        "id": "3af95c59fe3c4d14",
+        "type": "change",
+        "z": "c3c083f5bb5e3e97",
+        "g": "5ba4446bc7b6d518",
+        "name": "idle",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "{\"currentState\": \"Idle\"}",
+                "tot": "str"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 1030,
+        "y": 240,
+        "wires": [
+            [
+                "931af811331737b0"
+            ]
+        ]
+    },
+    {
+        "id": "7f96bd42f49178d1",
+        "type": "debug",
+        "z": "c3c083f5bb5e3e97",
+        "g": "5ba4446bc7b6d518",
+        "name": "debug 43",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 880,
+        "y": 200,
+        "wires": []
+    },
+    {
+        "id": "80146e5add039481",
+        "type": "link out",
+        "z": "c3c083f5bb5e3e97",
+        "g": "5ba4446bc7b6d518",
+        "name": "link out 15",
+        "mode": "link",
+        "links": [
+            "d512f3e7b22dfb71"
+        ],
+        "x": 735,
+        "y": 220,
+        "wires": []
+    },
+    {
+        "id": "eb8f33dc54d29849",
+        "type": "change",
+        "z": "c3c083f5bb5e3e97",
+        "g": "5ba4446bc7b6d518",
+        "name": "calibrating",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "{\"currentState\": \"Calibrating\"}",
+                "tot": "str"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 610,
+        "y": 220,
+        "wires": [
+            [
+                "80146e5add039481"
+            ]
+        ]
+    },
+    {
+        "id": "75ae118d87387fe0",
+        "type": "change",
+        "z": "c3c083f5bb5e3e97",
+        "g": "5ba4446bc7b6d518",
+        "name": "setTemporaryTopic",
+        "rules": [
+            {
+                "t": "set",
+                "p": "originalPayload",
+                "pt": "msg",
+                "to": "payload",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 630,
+        "y": 440,
+        "wires": [
+            [
+                "23cfaa7850d8dc68"
+            ]
+        ]
+    },
+    {
+        "id": "23cfaa7850d8dc68",
+        "type": "exec",
+        "z": "c3c083f5bb5e3e97",
+        "g": "5ba4446bc7b6d518",
+        "command": "/home/pi/Desktop/YOLO/run_save_img.sh",
+        "addpay": "",
+        "append": "",
+        "useSpawn": "false",
+        "timer": "",
+        "winHide": false,
+        "oldrc": false,
+        "name": "startCamera-bash",
+        "x": 830,
+        "y": 440,
+        "wires": [
+            [
+                "29bcf059a7f7cf9d"
+            ],
+            [],
+            []
+        ]
+    },
+    {
+        "id": "29bcf059a7f7cf9d",
+        "type": "change",
+        "z": "c3c083f5bb5e3e97",
+        "g": "5ba4446bc7b6d518",
+        "name": "extractTemporaryTopic",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "originalPayload",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 1040,
+        "y": 420,
+        "wires": [
+            [
+                "e46afe6dc4bb5495"
+            ]
+        ]
+    },
+    {
+        "id": "e46afe6dc4bb5495",
+        "type": "file in",
+        "z": "c3c083f5bb5e3e97",
+        "g": "5ba4446bc7b6d518",
+        "name": "readPartsCount",
+        "filename": "/home/pi/Desktop/YOLO/detection_results/component_counts.json",
+        "filenameType": "str",
+        "format": "utf8",
+        "chunk": false,
+        "sendError": false,
+        "encoding": "none",
+        "allProps": false,
+        "x": 1260,
+        "y": 420,
+        "wires": [
+            [
+                "f1a562e6adb64bad"
+            ]
+        ]
+    },
+    {
+        "id": "f1a562e6adb64bad",
+        "type": "link out",
+        "z": "c3c083f5bb5e3e97",
+        "g": "5ba4446bc7b6d518",
+        "name": "link out 28",
+        "mode": "link",
+        "links": [
+            "d512f3e7b22dfb71"
+        ],
+        "x": 1385,
+        "y": 420,
+        "wires": []
+    },
+    {
+        "id": "93fe370f6980db28",
+        "type": "function",
+        "z": "c3c083f5bb5e3e97",
+        "g": "bf610bbabc9ed441",
+        "name": "Setup filter",
+        "func": "// Safely check if metrics.status exists and is \"Setup\"\nif (msg.payload &&\n    msg.payload.currentOperation &&\n    msg.payload.currentOperation.metrics &&\n    msg.payload.currentOperation.metrics.status === \"Setup\") {\n    return null;  // Block the message if status is \"Setup\"\n} else {\n    return msg;   // Let the payload pass through otherwise\n}",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 430,
+        "y": 60,
+        "wires": [
+            [
+                "5c97968deaac23ac"
+            ]
+        ]
+    },
+    {
+        "id": "70bca07442f733be",
+        "type": "link in",
+        "z": "c3c083f5bb5e3e97",
+        "g": "3aabd14b15b13b29",
+        "name": "link in 4",
+        "links": [
+            "5c97968deaac23ac",
+            "433ee6b5d8598d21"
+        ],
+        "x": 95,
+        "y": 240,
+        "wires": [
+            [
+                "dff5d058c63494e7"
+            ]
+        ]
+    },
+    {
+        "id": "478903ee9cb4d011",
+        "type": "comment",
+        "z": "be5f5f9b4915c031",
+        "name": "flow for producing the 3rd and 4th part ",
+        "info": "",
+        "x": 370,
+        "y": 60,
+        "wires": []
+    },
+    {
+        "id": "eab3a34961181eee",
+        "type": "comment",
+        "z": "be5f5f9b4915c031",
+        "name": "NODE RED 2",
+        "info": "",
+        "x": 110,
+        "y": 60,
+        "wires": []
+    },
+    {
+        "id": "da94840355fbe857",
+        "type": "link in",
+        "z": "be5f5f9b4915c031",
+        "g": "24a3af8555d44995",
+        "name": "link in 1",
+        "links": [
+            "5c97968deaac23ac",
+            "433ee6b5d8598d21"
+        ],
+        "x": 95,
+        "y": 280,
+        "wires": [
+            [
+                "55a4d8b1484b01b2"
+            ]
+        ]
+    },
+    {
+        "id": "6900de354579dd90",
+        "type": "change",
+        "z": "be5f5f9b4915c031",
+        "g": "24a3af8555d44995",
+        "name": "savingCurrentOperationToGlobalVariable",
+        "rules": [
+            {
+                "t": "set",
+                "p": "currentOperation",
+                "pt": "global",
+                "to": "payload",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 440,
+        "y": 280,
+        "wires": [
+            [
+                "5fca30e17bed0785"
+            ]
+        ],
+        "info": "Saves the production order that we use to identify order details such as \r\noperations and colors of subparts to a global variable. That is done so we can later\r\nmodify the JSON document (change cycle time, number of parts etc.). Global variable enables\r\nus to change it anywhere in any flow with either a function or change node."
+    },
+    {
+        "id": "55a4d8b1484b01b2",
+        "type": "switch",
+        "z": "be5f5f9b4915c031",
+        "g": "24a3af8555d44995",
+        "name": "",
+        "property": "payload",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "hask",
+                "v": "currentOperation",
+                "vt": "str"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 1,
+        "x": 190,
+        "y": 280,
+        "wires": [
+            [
+                "6900de354579dd90"
+            ]
+        ]
+    },
+    {
+        "id": "03258f1ba41c7503",
+        "type": "mqtt out",
+        "z": "be5f5f9b4915c031",
+        "g": "fb1ce016058df793",
+        "name": "updateAttributes",
+        "topic": "v1/devices/me/attributes",
+        "qos": "",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "ec403f0572624cab",
+        "x": 940,
+        "y": 280,
+        "wires": []
+    },
+    {
+        "id": "d512f3e7b22dfb71",
+        "type": "link in",
+        "z": "be5f5f9b4915c031",
+        "g": "fb1ce016058df793",
+        "name": "link in 2",
+        "links": [
+            "54c45d4e798811cb",
+            "80146e5add039481",
+            "931af811331737b0",
+            "12c694c1b98c4a8c",
+            "c3fcf85d56000a49",
+            "f1a562e6adb64bad",
+            "a725a7c7a09687e5",
+            "5a9e91ed71b0afda",
+            "9e0a62433d46ae78"
+        ],
+        "x": 745,
+        "y": 280,
+        "wires": [
+            [
+                "03258f1ba41c7503"
+            ]
+        ]
+    },
+    {
+        "id": "796daf4d95d43d6e",
+        "type": "change",
+        "z": "be5f5f9b4915c031",
+        "g": "7d338acab4991d1a",
+        "name": "fromGlobalToNodeScope",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "currentOperation",
+                "tot": "global"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 1110,
+        "y": 120,
+        "wires": [
+            [
+                "12c694c1b98c4a8c"
+            ]
+        ],
+        "info": "Retrieves the global variable of production\r\norder so it can be uploaded to ThingsBoard.\r\n"
+    },
+    {
+        "id": "12c694c1b98c4a8c",
+        "type": "link out",
+        "z": "be5f5f9b4915c031",
+        "g": "7d338acab4991d1a",
+        "name": "link out 17",
+        "mode": "link",
+        "links": [
+            "d512f3e7b22dfb71"
+        ],
+        "x": 1275,
+        "y": 120,
+        "wires": []
+    },
+    {
+        "id": "41a3d87b47752764",
+        "type": "complete",
+        "z": "be5f5f9b4915c031",
+        "g": "7d338acab4991d1a",
+        "name": "triggerEndOfAssembly",
+        "scope": [
+            "b15978b8aa4ba228"
+        ],
+        "uncaught": false,
+        "x": 860,
+        "y": 120,
+        "wires": [
+            [
+                "796daf4d95d43d6e",
+                "20e36c900c8f74e3"
+            ]
+        ]
+    },
+    {
+        "id": "4c6f3a3776c708b2",
+        "type": "switch",
+        "z": "be5f5f9b4915c031",
+        "g": "8a593e49482fa67b",
+        "name": "filterByModule",
+        "property": "payload.currentOperation.data.assemblyParent",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "train",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "ship",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "mosaic",
+                "vt": "str"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 3,
+        "x": 420,
+        "y": 460,
+        "wires": [
+            [
+                "d069450465565e3c"
+            ],
+            [
+                "41b2e33eab53304e"
+            ],
+            [
+                "b74e2a22060eb82c"
+            ]
+        ],
+        "info": "Here we filter the production orders so that\r\nonly the orders that are assembling a train are processed."
+    },
+    {
+        "id": "54c45d4e798811cb",
+        "type": "link out",
+        "z": "be5f5f9b4915c031",
+        "g": "0f7d988e1ee0bab1",
+        "name": "link out 18",
+        "mode": "link",
+        "links": [
+            "d512f3e7b22dfb71"
+        ],
+        "x": 1705,
+        "y": 560,
+        "wires": []
+    },
+    {
+        "id": "e792024ffcc07dac",
+        "type": "change",
+        "z": "be5f5f9b4915c031",
+        "g": "0f7d988e1ee0bab1",
+        "name": "error",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "{\"currentState\": \"Error\"}",
+                "tot": "str"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 1590,
+        "y": 540,
+        "wires": [
+            [
+                "54c45d4e798811cb",
+                "e60b9434167cda8c"
+            ]
+        ]
+    },
+    {
+        "id": "110bc66d224fbec4",
+        "type": "change",
+        "z": "be5f5f9b4915c031",
+        "g": "0f7d988e1ee0bab1",
+        "name": "processing",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "{\"currentState\": \"Processing\"}",
+                "tot": "str"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 1570,
+        "y": 500,
+        "wires": [
+            [
+                "54c45d4e798811cb",
+                "897f27ed0fcaee0e"
+            ]
+        ]
+    },
+    {
+        "id": "10aff01a12c0638f",
+        "type": "change",
+        "z": "be5f5f9b4915c031",
+        "g": "0f7d988e1ee0bab1",
+        "name": "idle",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "{\"currentState\": \"Idle\"}",
+                "tot": "str"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 1590,
+        "y": 580,
+        "wires": [
+            [
+                "54c45d4e798811cb",
+                "7f0f0531e101c12a"
+            ]
+        ]
+    },
+    {
+        "id": "58659442d6de6f77",
+        "type": "switch",
+        "z": "be5f5f9b4915c031",
+        "g": "0f7d988e1ee0bab1",
+        "name": "",
+        "property": "payload",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "cont",
+                "v": "END",
+                "vt": "str"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 1,
+        "x": 1410,
+        "y": 580,
+        "wires": [
+            [
+                "10aff01a12c0638f",
+                "68ec249cd61ca9c9"
+            ]
+        ],
+        "info": "Only lets through payloads that are not empty.\r\nJust in case execute node returns empty outputs. "
+    },
+    {
+        "id": "3e4a2903da8c1426",
+        "type": "comment",
+        "z": "be5f5f9b4915c031",
+        "g": "0f7d988e1ee0bab1",
+        "name": "dataForThingsBoardStatusTracking",
+        "info": "These three nodes are used to show\nwhere our proces is in ThingsBoard.\nThey are transmitted by MQTT to TB\nattributes and are displayed on the \ndashboard.",
+        "x": 1640,
+        "y": 460,
+        "wires": []
+    },
+    {
+        "id": "0c64bfcbfdbd6f6c",
+        "type": "link in",
+        "z": "be5f5f9b4915c031",
+        "g": "0f7d988e1ee0bab1",
+        "name": "link in 5",
+        "links": [
+            "2e53005ce7937618",
+            "808eb6078d6a2b52",
+            "a5b1441ca3ad3789"
+        ],
+        "x": 1285,
+        "y": 580,
+        "wires": [
+            [
+                "58659442d6de6f77"
+            ]
+        ]
+    },
+    {
+        "id": "ae87fef065604491",
+        "type": "link in",
+        "z": "be5f5f9b4915c031",
+        "g": "0f7d988e1ee0bab1",
+        "name": "link in 6",
+        "links": [
+            "8251766f45a418ee",
+            "fa6361fc8ec37345",
+            "23738ce5667c5524"
+        ],
+        "x": 1475,
+        "y": 540,
+        "wires": [
+            [
+                "e792024ffcc07dac"
+            ]
+        ]
+    },
+    {
+        "id": "68ec249cd61ca9c9",
+        "type": "change",
+        "z": "be5f5f9b4915c031",
+        "g": "b328f63c602e16ef",
+        "name": "changeQuotationMark",
+        "rules": [
+            {
+                "t": "change",
+                "p": "payload",
+                "pt": "msg",
+                "from": "'",
+                "fromt": "str",
+                "to": "\"",
+                "tot": "str"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 1370,
+        "y": 700,
+        "wires": [
+            [
+                "8d529d1ba7c2d312"
+            ]
+        ],
+        "info": "When reading a python print in NodeRed the quotation\r\nmark is changed from \" to '. ' is not readeable by JSON.parse,\r\nwhich we need in order to convert from string to JSON object."
+    },
+    {
+        "id": "b15978b8aa4ba228",
+        "type": "change",
+        "z": "be5f5f9b4915c031",
+        "g": "b328f63c602e16ef",
+        "name": "updateCurrentOperationAfterAssembly",
+        "rules": [],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 2040,
+        "y": 700,
+        "wires": [
+            []
+        ],
+        "info": "Updates the global variable production order with \r\norder status (Completed), processing time etc.\r\n"
+    },
+    {
+        "id": "fc0a3e0a3a571c38",
+        "type": "exec",
+        "z": "be5f5f9b4915c031",
+        "g": "e7ae517193fe020c",
+        "command": "python /home/pi/Desktop/FW_DOBOT/modularAssembly/assembly_NR.py",
+        "addpay": "",
+        "append": "",
+        "useSpawn": "true",
+        "timer": "",
+        "winHide": false,
+        "oldrc": false,
+        "name": "trainAssembly",
+        "x": 700,
+        "y": 620,
+        "wires": [
+            [
+                "2e53005ce7937618"
+            ],
+            [
+                "25a052a3136b7e9f",
+                "8251766f45a418ee"
+            ],
+            [
+                "2e0fd26e1b428b99"
+            ]
+        ],
+        "info": "Runs a python file that executes the assembly.\r\nThe node outputs: print(), error text and \r\nreturn code(id number of the error)."
+    },
+    {
+        "id": "25a052a3136b7e9f",
+        "type": "debug",
+        "z": "be5f5f9b4915c031",
+        "g": "e7ae517193fe020c",
+        "name": "error",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 870,
+        "y": 660,
+        "wires": []
+    },
+    {
+        "id": "2e0fd26e1b428b99",
+        "type": "debug",
+        "z": "be5f5f9b4915c031",
+        "g": "e7ae517193fe020c",
+        "name": "return code",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 890,
+        "y": 700,
+        "wires": []
+    },
+    {
+        "id": "2e53005ce7937618",
+        "type": "link out",
+        "z": "be5f5f9b4915c031",
+        "g": "e7ae517193fe020c",
+        "name": "link out 20",
+        "mode": "link",
+        "links": [
+            "0c64bfcbfdbd6f6c"
+        ],
+        "x": 865,
+        "y": 580,
+        "wires": []
+    },
+    {
+        "id": "8251766f45a418ee",
+        "type": "link out",
+        "z": "be5f5f9b4915c031",
+        "g": "e7ae517193fe020c",
+        "name": "link out 21",
+        "mode": "link",
+        "links": [
+            "ae87fef065604491"
+        ],
+        "x": 865,
+        "y": 620,
+        "wires": []
+    },
+    {
+        "id": "db5c66866218cdeb",
+        "type": "file",
+        "z": "be5f5f9b4915c031",
+        "g": "a162a1235bad15b5",
+        "name": "saveData",
+        "filename": "/home/pi/Desktop/FW_DOBOT/modularAssembly/order_data",
+        "filenameType": "str",
+        "appendNewline": true,
+        "createDir": false,
+        "overwriteFile": "true",
+        "encoding": "none",
+        "x": 1100,
+        "y": 480,
+        "wires": [
+            [
+                "fc0a3e0a3a571c38",
+                "110bc66d224fbec4"
+            ]
+        ],
+        "info": "Saves the string to a txt file, which is then\r\nuploaded to the python file. This string will be\r\ndecoded by the python file to read its information."
+    },
+    {
+        "id": "d069450465565e3c",
+        "type": "function",
+        "z": "be5f5f9b4915c031",
+        "g": "a162a1235bad15b5",
+        "name": "getOperations",
+        "func": "//msg.payload = msg.payload.assembly;\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 700,
+        "y": 480,
+        "wires": [
+            [
+                "27dcedbac03da195"
+            ]
+        ],
+        "info": "Here we separate and get only the operations that should\r\nbe performed on our module. The data should include part \r\nname and color."
+    },
+    {
+        "id": "27dcedbac03da195",
+        "type": "function",
+        "z": "be5f5f9b4915c031",
+        "g": "a162a1235bad15b5",
+        "name": "convertToString",
+        "func": "msg.payload = JSON.stringify(msg.payload);\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 900,
+        "y": 480,
+        "wires": [
+            [
+                "db5c66866218cdeb"
+            ]
+        ],
+        "info": "Converts JSON to string which is readable by python."
+    },
+    {
+        "id": "a4b58d5526a9c449",
+        "type": "file",
+        "z": "be5f5f9b4915c031",
+        "g": "e85269b4dfcd047e",
+        "name": "saveData",
+        "filename": "/home/pi/Desktop/FW_DOBOT/modularAssembly/order_data",
+        "filenameType": "str",
+        "appendNewline": true,
+        "createDir": false,
+        "overwriteFile": "true",
+        "encoding": "none",
+        "x": 1100,
+        "y": 900,
+        "wires": [
+            [
+                "e9a41265fd282a5c",
+                "110bc66d224fbec4"
+            ]
+        ],
+        "info": "Saves the string to a txt file, which is then\r\nuploaded to the python file. This string will be\r\ndecoded by the python file to read its information."
+    },
+    {
+        "id": "41b2e33eab53304e",
+        "type": "function",
+        "z": "be5f5f9b4915c031",
+        "g": "e85269b4dfcd047e",
+        "name": "getOperations",
+        "func": "\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 700,
+        "y": 900,
+        "wires": [
+            [
+                "d50de5d8c11d4f22"
+            ]
+        ],
+        "info": "Here we separate and get only the operations that should\r\nbe performed on our module. The data should include part \r\nname and color."
+    },
+    {
+        "id": "d50de5d8c11d4f22",
+        "type": "function",
+        "z": "be5f5f9b4915c031",
+        "g": "e85269b4dfcd047e",
+        "name": "convertToString",
+        "func": "msg.payload = JSON.stringify(msg.payload);\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 900,
+        "y": 900,
+        "wires": [
+            [
+                "a4b58d5526a9c449"
+            ]
+        ],
+        "info": "Converts JSON to string which is readable by python."
+    },
+    {
+        "id": "e9a41265fd282a5c",
+        "type": "exec",
+        "z": "be5f5f9b4915c031",
+        "g": "1cbc8794dd6b6918",
+        "command": "python /home/pi/Desktop/FW_DOBOT/modularAssembly/assembly_NR.py",
+        "addpay": "",
+        "append": "",
+        "useSpawn": "false",
+        "timer": "",
+        "winHide": false,
+        "oldrc": false,
+        "name": "shipAssembly",
+        "x": 700,
+        "y": 1040,
+        "wires": [
+            [
+                "808eb6078d6a2b52",
+                "deb8fc46c75cb541"
+            ],
+            [
+                "90acc85c442ce8d1",
+                "fa6361fc8ec37345"
+            ],
+            [
+                "2332d581f442f92b"
+            ]
+        ],
+        "info": "Runs a python file that executes the assembly.\r\nThe node outputs: print(), error text and \r\nreturn code(id number of the error)."
+    },
+    {
+        "id": "90acc85c442ce8d1",
+        "type": "debug",
+        "z": "be5f5f9b4915c031",
+        "g": "1cbc8794dd6b6918",
+        "name": "error",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 870,
+        "y": 1080,
+        "wires": []
+    },
+    {
+        "id": "2332d581f442f92b",
+        "type": "debug",
+        "z": "be5f5f9b4915c031",
+        "g": "1cbc8794dd6b6918",
+        "name": "return code",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 890,
+        "y": 1120,
+        "wires": []
+    },
+    {
+        "id": "808eb6078d6a2b52",
+        "type": "link out",
+        "z": "be5f5f9b4915c031",
+        "g": "1cbc8794dd6b6918",
+        "name": "link out 22",
+        "mode": "link",
+        "links": [
+            "0c64bfcbfdbd6f6c"
+        ],
+        "x": 875,
+        "y": 1000,
+        "wires": []
+    },
+    {
+        "id": "fa6361fc8ec37345",
+        "type": "link out",
+        "z": "be5f5f9b4915c031",
+        "g": "1cbc8794dd6b6918",
+        "name": "link out 23",
+        "mode": "link",
+        "links": [
+            "ae87fef065604491"
+        ],
+        "x": 875,
+        "y": 1040,
+        "wires": []
+    },
+    {
+        "id": "4462d8bfe82aa87f",
+        "type": "comment",
+        "z": "be5f5f9b4915c031",
+        "g": "2ffab6c52026e078",
+        "name": "currently no python file for ship",
+        "info": "",
+        "x": 1190,
+        "y": 1020,
+        "wires": []
+    },
+    {
+        "id": "165208ba67b51436",
+        "type": "file",
+        "z": "be5f5f9b4915c031",
+        "g": "3f979471495335a4",
+        "name": "saveData",
+        "filename": "/home/pi/Desktop/FW_DOBOT/modularAssembly/order_data",
+        "filenameType": "str",
+        "appendNewline": true,
+        "createDir": false,
+        "overwriteFile": "true",
+        "encoding": "none",
+        "x": 1100,
+        "y": 1300,
+        "wires": [
+            [
+                "084660e6346335eb",
+                "110bc66d224fbec4"
+            ]
+        ],
+        "info": "Saves the string to a txt file, which is then\r\nuploaded to the python file. This string will be\r\ndecoded by the python file to read its information."
+    },
+    {
+        "id": "b74e2a22060eb82c",
+        "type": "function",
+        "z": "be5f5f9b4915c031",
+        "g": "3f979471495335a4",
+        "name": "getOperations",
+        "func": "\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 700,
+        "y": 1300,
+        "wires": [
+            [
+                "d48ed3667650307e"
+            ]
+        ],
+        "info": "Here we separate and get only the operations that should\r\nbe performed on our module. The data should include part \r\nname and color."
+    },
+    {
+        "id": "d48ed3667650307e",
+        "type": "function",
+        "z": "be5f5f9b4915c031",
+        "g": "3f979471495335a4",
+        "name": "convertToString",
+        "func": "msg.payload = JSON.stringify(msg.payload);\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 900,
+        "y": 1300,
+        "wires": [
+            [
+                "165208ba67b51436"
+            ]
+        ],
+        "info": "Converts JSON to string which is readable by python."
+    },
+    {
+        "id": "084660e6346335eb",
+        "type": "exec",
+        "z": "be5f5f9b4915c031",
+        "g": "64950b6fbfbbd0fe",
+        "command": "python /home/pi/Desktop/FW_DOBOT/modularAssembly/assembly_NR.py",
+        "addpay": "",
+        "append": "",
+        "useSpawn": "false",
+        "timer": "",
+        "winHide": false,
+        "oldrc": false,
+        "name": "mosaicAssembly",
+        "x": 710,
+        "y": 1440,
+        "wires": [
+            [
+                "a5b1441ca3ad3789"
+            ],
+            [
+                "2a79426399f92635",
+                "23738ce5667c5524"
+            ],
+            [
+                "33acf51d2d95392d"
+            ]
+        ],
+        "info": "Runs a python file that executes the assembly.\r\nThe node outputs: print(), error text and \r\nreturn code(id number of the error)."
+    },
+    {
+        "id": "2a79426399f92635",
+        "type": "debug",
+        "z": "be5f5f9b4915c031",
+        "g": "64950b6fbfbbd0fe",
+        "name": "error",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 870,
+        "y": 1480,
+        "wires": []
+    },
+    {
+        "id": "33acf51d2d95392d",
+        "type": "debug",
+        "z": "be5f5f9b4915c031",
+        "g": "64950b6fbfbbd0fe",
+        "name": "return code",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 890,
+        "y": 1520,
+        "wires": []
+    },
+    {
+        "id": "a5b1441ca3ad3789",
+        "type": "link out",
+        "z": "be5f5f9b4915c031",
+        "g": "64950b6fbfbbd0fe",
+        "name": "link out 24",
+        "mode": "link",
+        "links": [
+            "0c64bfcbfdbd6f6c"
+        ],
+        "x": 865,
+        "y": 1400,
+        "wires": []
+    },
+    {
+        "id": "23738ce5667c5524",
+        "type": "link out",
+        "z": "be5f5f9b4915c031",
+        "g": "64950b6fbfbbd0fe",
+        "name": "link out 25",
+        "mode": "link",
+        "links": [
+            "ae87fef065604491"
+        ],
+        "x": 865,
+        "y": 1440,
+        "wires": []
+    },
+    {
+        "id": "329ffbb2c41fa793",
+        "type": "comment",
+        "z": "be5f5f9b4915c031",
+        "g": "ed2ebbfee8e4e0e9",
+        "name": "currently no python file for mosaic",
+        "info": "",
+        "x": 1170,
+        "y": 1440,
+        "wires": []
+    },
+    {
+        "id": "51d5731c3e799bc0",
+        "type": "function",
+        "z": "be5f5f9b4915c031",
+        "g": "8a593e49482fa67b",
+        "name": "writeProcessTime",
+        "func": "let start = msg.myrawdate;\nflow.set(\"startTime\", start);\n\n\nlet currentOperation = global.get(\"currentOperation\");\n\ncurrentOperation.currentOperation.metrics.realOpStart = start;\n\nglobal.set(\"currentOperation\", currentOperation);\n\nreturn msg;\n\n",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 270,
+        "y": 540,
+        "wires": [
+            [
+                "4c6f3a3776c708b2"
+            ]
+        ],
+        "info": "Calculates process time from two UTC times we get earlier. \r\nThe two important outputs are .payload (processTime) and \r\n.myrawdate. \r\nThis function overwrites the previous message which is \r\nan output from the execute node (python file output/print)."
+    },
+    {
+        "id": "5fca30e17bed0785",
+        "type": "simpletime",
+        "z": "be5f5f9b4915c031",
+        "g": "8a593e49482fa67b",
+        "name": "processStart",
+        "mydate": false,
+        "myymd": false,
+        "myyear": false,
+        "mymonth": false,
+        "mymonthn": false,
+        "mymonthf": false,
+        "mydom": false,
+        "mydoy": false,
+        "myday": false,
+        "mydayf": false,
+        "myhourpm": false,
+        "myhour": false,
+        "mytime": false,
+        "mytimes": false,
+        "myminute": false,
+        "myminutes": false,
+        "mysecond": false,
+        "mymillis": false,
+        "myepoch": false,
+        "myrawdate": true,
+        "mypm": false,
+        "x": 150,
+        "y": 460,
+        "wires": [
+            [
+                "51d5731c3e799bc0",
+                "20e36c900c8f74e3"
+            ]
+        ],
+        "info": "Start time of the proces in ISO8621. Will be\r\nappended to the production order later and used\r\nfor calculating process time."
+    },
+    {
+        "id": "30c3efe6bff9db8b",
+        "type": "function",
+        "z": "be5f5f9b4915c031",
+        "g": "b328f63c602e16ef",
+        "name": "writeProcessTime",
+        "func": "let end = msg.myrawdate\n\nlet currentOperation = global.get(\"currentOperation\");\n\ncurrentOperation.currentOperation.metrics.realOpEnd = end;\ncurrentOperation.currentOperation.metrics.status = \"Finished\"\n\nglobal.set(\"currentOperation\", currentOperation);\n\nreturn msg;\n\n",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1770,
+        "y": 700,
+        "wires": [
+            [
+                "b15978b8aa4ba228"
+            ]
+        ],
+        "info": "Calculates process time from two UTC times we get earlier. \r\nThe two important outputs are .payload (processTime) and \r\n.myrawdate. \r\nThis function overwrites the previous message which is \r\nan output from the execute node (python file output/print)."
+    },
+    {
+        "id": "8d529d1ba7c2d312",
+        "type": "simpletime",
+        "z": "be5f5f9b4915c031",
+        "g": "b328f63c602e16ef",
+        "name": "processEnd",
+        "mydate": false,
+        "myymd": false,
+        "myyear": false,
+        "mymonth": false,
+        "mymonthn": false,
+        "mymonthf": false,
+        "mydom": false,
+        "mydoy": false,
+        "myday": false,
+        "mydayf": false,
+        "myhourpm": false,
+        "myhour": false,
+        "mytime": false,
+        "mytimes": false,
+        "myminute": false,
+        "myminutes": false,
+        "mysecond": false,
+        "mymillis": false,
+        "myepoch": false,
+        "myrawdate": true,
+        "mypm": false,
+        "x": 1570,
+        "y": 700,
+        "wires": [
+            [
+                "30c3efe6bff9db8b"
+            ]
+        ],
+        "info": "End time of the proces in ISO8621 standard used\r\nfor calculating process time and for end time in\r\nproduction order."
+    },
+    {
+        "id": "897f27ed0fcaee0e",
+        "type": "debug",
+        "z": "be5f5f9b4915c031",
+        "g": "0f7d988e1ee0bab1",
+        "name": "debug 2",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1730,
+        "y": 500,
+        "wires": []
+    },
+    {
+        "id": "7f0f0531e101c12a",
+        "type": "debug",
+        "z": "be5f5f9b4915c031",
+        "g": "0f7d988e1ee0bab1",
+        "name": "debug 3",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1730,
+        "y": 600,
+        "wires": []
+    },
+    {
+        "id": "e60b9434167cda8c",
+        "type": "debug",
+        "z": "be5f5f9b4915c031",
+        "g": "0f7d988e1ee0bab1",
+        "name": "debug 4",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1800,
+        "y": 540,
+        "wires": []
+    },
+    {
+        "id": "deb8fc46c75cb541",
+        "type": "debug",
+        "z": "be5f5f9b4915c031",
+        "g": "1cbc8794dd6b6918",
+        "name": "debug 7",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 740,
+        "y": 1000,
+        "wires": []
+    },
+    {
+        "id": "c18199a48da03c08",
+        "type": "exec",
+        "z": "be5f5f9b4915c031",
+        "g": "f648ac36cb254b91",
+        "command": "/home/pi/Desktop/YOLO/run_save_img.sh",
+        "addpay": "",
+        "append": "",
+        "useSpawn": "false",
+        "timer": "",
+        "winHide": false,
+        "oldrc": false,
+        "name": "startCamera-bash",
+        "x": 1430,
+        "y": 280,
+        "wires": [
+            [
+                "65a16cdc63021c25"
+            ],
+            [],
+            []
+        ]
+    },
+    {
+        "id": "20e36c900c8f74e3",
+        "type": "change",
+        "z": "be5f5f9b4915c031",
+        "g": "f648ac36cb254b91",
+        "name": "setTemporaryTopic",
+        "rules": [
+            {
+                "t": "set",
+                "p": "originalPayload",
+                "pt": "msg",
+                "to": "payload",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 1210,
+        "y": 280,
+        "wires": [
+            [
+                "c18199a48da03c08"
+            ]
+        ]
+    },
+    {
+        "id": "65a16cdc63021c25",
+        "type": "change",
+        "z": "be5f5f9b4915c031",
+        "g": "f648ac36cb254b91",
+        "name": "extractTemporaryTopic",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "originalPayload",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 1660,
+        "y": 280,
+        "wires": [
+            [
+                "eb5910290722519c"
+            ]
+        ]
+    },
+    {
+        "id": "c3fcf85d56000a49",
+        "type": "link out",
+        "z": "be5f5f9b4915c031",
+        "g": "f648ac36cb254b91",
+        "name": "link out 29",
+        "mode": "link",
+        "links": [
+            "d512f3e7b22dfb71"
+        ],
+        "x": 2005,
+        "y": 280,
+        "wires": []
+    },
+    {
+        "id": "eb5910290722519c",
+        "type": "file in",
+        "z": "be5f5f9b4915c031",
+        "g": "f648ac36cb254b91",
+        "name": "readPartsCount",
+        "filename": "/home/pi/Desktop/YOLO/detection_results/component_counts.json",
+        "filenameType": "str",
+        "format": "utf8",
+        "chunk": false,
+        "sendError": false,
+        "encoding": "none",
+        "allProps": false,
+        "x": 1880,
+        "y": 280,
+        "wires": [
+            [
+                "c3fcf85d56000a49"
+            ]
+        ]
+    },
+    {
+        "id": "56873e073f03dbe9",
+        "type": "inject",
+        "z": "be5f5f9b4915c031",
+        "g": "8a593e49482fa67b",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 380,
+        "y": 700,
+        "wires": [
+            [
+                "fc0a3e0a3a571c38"
+            ]
+        ]
+    },
+    {
+        "id": "d78e2596c5ccebb5",
+        "type": "link in",
+        "z": "1137166cdcd75077",
+        "name": "link in 15",
+        "links": [
+            "5c97968deaac23ac",
+            "433ee6b5d8598d21"
+        ],
+        "x": 145,
+        "y": 260,
+        "wires": [
+            [
+                "19ebf20c33b1867b",
+                "58be085f10fd664f",
+                "b0ca19bd877ae75c"
+            ]
+        ]
+    },
+    {
+        "id": "19ebf20c33b1867b",
+        "type": "switch",
+        "z": "1137166cdcd75077",
+        "name": "Start",
+        "property": "payload.conveyorMessage",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "Start",
+                "vt": "str"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 1,
+        "x": 290,
+        "y": 260,
+        "wires": [
+            [
+                "40a08832aaed0544",
+                "597e6fb0cc9884a3"
+            ]
+        ]
+    },
+    {
+        "id": "8776f7d23db3cbf8",
+        "type": "exec",
+        "z": "1137166cdcd75077",
+        "command": "python /home/pi/Desktop/FW_DOBOT/modularAssembly/conveyor_with_IR.py",
+        "addpay": "",
+        "append": "",
+        "useSpawn": "false",
+        "timer": "",
+        "winHide": false,
+        "oldrc": false,
+        "name": "Conveyor belt and waiting for AGV (IR sensor)",
+        "x": 700,
+        "y": 260,
+        "wires": [
+            [
+                "247cf8b94e492006"
+            ],
+            [
+                "90cf936868a1e96d"
+            ],
+            []
+        ]
+    },
+    {
+        "id": "40a08832aaed0544",
+        "type": "function",
+        "z": "1137166cdcd75077",
+        "name": "function 9",
+        "func": "\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 440,
+        "y": 260,
+        "wires": [
+            [
+                "8776f7d23db3cbf8"
+            ]
+        ]
+    },
+    {
+        "id": "6e8df731dd9e1398",
+        "type": "mqtt out",
+        "z": "1137166cdcd75077",
+        "g": "0a14218ec5fede02",
+        "name": "updateAttributes",
+        "topic": "v1/devices/me/attributes",
+        "qos": "",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "ec403f0572624cab",
+        "x": 460,
+        "y": 60,
+        "wires": []
+    },
+    {
+        "id": "d49cc0ee6a0eac59",
+        "type": "link in",
+        "z": "1137166cdcd75077",
+        "g": "0a14218ec5fede02",
+        "name": "conveyor to TB",
+        "links": [
+            "52a05465cf84beda",
+            "b1db08dd8c3a36be",
+            "2e770e95709e9e05"
+        ],
+        "x": 265,
+        "y": 60,
+        "wires": [
+            [
+                "6e8df731dd9e1398",
+                "9a49a30562c17df2"
+            ]
+        ]
+    },
+    {
+        "id": "89d91555c4aaa6bb",
+        "type": "complete",
+        "z": "1137166cdcd75077",
+        "name": "",
+        "scope": [
+            "247cf8b94e492006"
+        ],
+        "uncaught": false,
+        "x": 990,
+        "y": 260,
+        "wires": [
+            [
+                "bb96350a331bf38f"
+            ]
+        ]
+    },
+    {
+        "id": "52a05465cf84beda",
+        "type": "link out",
+        "z": "1137166cdcd75077",
+        "name": "link out 25",
+        "mode": "link",
+        "links": [
+            "d49cc0ee6a0eac59"
+        ],
+        "x": 1295,
+        "y": 260,
+        "wires": []
+    },
+    {
+        "id": "bb96350a331bf38f",
+        "type": "change",
+        "z": "1137166cdcd75077",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "{\"conveyorResponse\": \"Waiting\"}",
+                "tot": "json"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 1160,
+        "y": 260,
+        "wires": [
+            [
+                "52a05465cf84beda"
+            ]
+        ]
+    },
+    {
+        "id": "58be085f10fd664f",
+        "type": "switch",
+        "z": "1137166cdcd75077",
+        "name": "AGV ready",
+        "property": "payload.conveyorMessage",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "AGV ready",
+                "vt": "str"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 1,
+        "x": 270,
+        "y": 540,
+        "wires": [
+            [
+                "0b62541cc273ecbc",
+                "c59b696a50fd85d6"
+            ]
+        ]
+    },
+    {
+        "id": "281a8ad1f66364ed",
+        "type": "exec",
+        "z": "1137166cdcd75077",
+        "command": "python /home/pi/Desktop/FW_DOBOT/modularAssembly/conveyor_send_to_AGV.py",
+        "addpay": "",
+        "append": "",
+        "useSpawn": "false",
+        "timer": "",
+        "winHide": false,
+        "oldrc": false,
+        "name": "Conveyor belt transport on AGV",
+        "x": 690,
+        "y": 540,
+        "wires": [
+            [
+                "fe7c82b81efa6afe"
+            ],
+            [
+                "613eeaaf7febc962"
+            ],
+            []
+        ]
+    },
+    {
+        "id": "0b62541cc273ecbc",
+        "type": "function",
+        "z": "1137166cdcd75077",
+        "name": "function 11",
+        "func": "\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 460,
+        "y": 540,
+        "wires": [
+            [
+                "281a8ad1f66364ed"
+            ]
+        ]
+    },
+    {
+        "id": "64babdbb9d3918be",
+        "type": "complete",
+        "z": "1137166cdcd75077",
+        "name": "",
+        "scope": [
+            "fe7c82b81efa6afe"
+        ],
+        "uncaught": false,
+        "x": 970,
+        "y": 540,
+        "wires": [
+            [
+                "62f57baf75538d0b"
+            ]
+        ]
+    },
+    {
+        "id": "b1db08dd8c3a36be",
+        "type": "link out",
+        "z": "1137166cdcd75077",
+        "name": "link out 26",
+        "mode": "link",
+        "links": [
+            "d49cc0ee6a0eac59"
+        ],
+        "x": 1295,
+        "y": 540,
+        "wires": []
+    },
+    {
+        "id": "62f57baf75538d0b",
+        "type": "change",
+        "z": "1137166cdcd75077",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "{\"conveyorResponse\": \"Sent\"}",
+                "tot": "json"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 1160,
+        "y": 540,
+        "wires": [
+            [
+                "b1db08dd8c3a36be"
+            ]
+        ]
+    },
+    {
+        "id": "597e6fb0cc9884a3",
+        "type": "debug",
+        "z": "1137166cdcd75077",
+        "name": "debug 48",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 400,
+        "y": 340,
+        "wires": []
+    },
+    {
+        "id": "c59b696a50fd85d6",
+        "type": "debug",
+        "z": "1137166cdcd75077",
+        "name": "debug 49",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 370,
+        "y": 640,
+        "wires": []
+    },
+    {
+        "id": "9a49a30562c17df2",
+        "type": "debug",
+        "z": "1137166cdcd75077",
+        "g": "0a14218ec5fede02",
+        "name": "debug 62",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 360,
+        "y": 140,
+        "wires": []
+    },
+    {
+        "id": "fe7c82b81efa6afe",
+        "type": "function",
+        "z": "1137166cdcd75077",
+        "name": "Part on AGV",
+        "func": "\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 890,
+        "y": 480,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "247cf8b94e492006",
+        "type": "function",
+        "z": "1137166cdcd75077",
+        "name": "Part stopped by IR",
+        "func": "\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 970,
+        "y": 200,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "b0ca19bd877ae75c",
+        "type": "switch",
+        "z": "1137166cdcd75077",
+        "name": "",
+        "property": "payload.conveyorMessage",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "Prepare for assembly",
+                "vt": "str"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 1,
+        "x": 290,
+        "y": 760,
+        "wires": [
+            [
+                "72a789e008fdf991",
+                "2b903b90f2d9741b"
+            ]
+        ]
+    },
+    {
+        "id": "b95a17773aae4b95",
+        "type": "exec",
+        "z": "1137166cdcd75077",
+        "command": "python /home/pi/Desktop/FW_DOBOT/modularAssembly/conveyor_prepare_for_assembly.py",
+        "addpay": "",
+        "append": "",
+        "useSpawn": "false",
+        "timer": "",
+        "winHide": false,
+        "oldrc": false,
+        "name": "Conveyor belt prepare for assembly",
+        "x": 700,
+        "y": 760,
+        "wires": [
+            [
+                "05a56c33ad5080f7"
+            ],
+            [
+                "6d5ee65e19209964"
+            ],
+            []
+        ]
+    },
+    {
+        "id": "72a789e008fdf991",
+        "type": "function",
+        "z": "1137166cdcd75077",
+        "name": "function 1",
+        "func": "\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 460,
+        "y": 760,
+        "wires": [
+            [
+                "b95a17773aae4b95"
+            ]
+        ]
+    },
+    {
+        "id": "e181d66a1c584118",
+        "type": "complete",
+        "z": "1137166cdcd75077",
+        "name": "",
+        "scope": [
+            "05a56c33ad5080f7"
+        ],
+        "uncaught": false,
+        "x": 970,
+        "y": 760,
+        "wires": [
+            [
+                "57c42973af573f62"
+            ]
+        ]
+    },
+    {
+        "id": "2e770e95709e9e05",
+        "type": "link out",
+        "z": "1137166cdcd75077",
+        "name": "link out 1",
+        "mode": "link",
+        "links": [
+            "d49cc0ee6a0eac59"
+        ],
+        "x": 1295,
+        "y": 760,
+        "wires": []
+    },
+    {
+        "id": "57c42973af573f62",
+        "type": "change",
+        "z": "1137166cdcd75077",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "{\"conveyorResponse\": \"Prepared\"}",
+                "tot": "json"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 1160,
+        "y": 760,
+        "wires": [
+            [
+                "2e770e95709e9e05",
+                "7846485c6fbd7661"
+            ]
+        ]
+    },
+    {
+        "id": "2b903b90f2d9741b",
+        "type": "debug",
+        "z": "1137166cdcd75077",
+        "name": "debug 5",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 370,
+        "y": 860,
+        "wires": []
+    },
+    {
+        "id": "05a56c33ad5080f7",
+        "type": "function",
+        "z": "1137166cdcd75077",
+        "name": "Part on prepared for assembly",
+        "func": "\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 970,
+        "y": 700,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "6d5ee65e19209964",
+        "type": "debug",
+        "z": "1137166cdcd75077",
+        "name": "debug 8",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 890,
+        "y": 840,
+        "wires": []
+    },
+    {
+        "id": "613eeaaf7febc962",
+        "type": "debug",
+        "z": "1137166cdcd75077",
+        "name": "debug 9",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 870,
+        "y": 600,
+        "wires": []
+    },
+    {
+        "id": "90cf936868a1e96d",
+        "type": "debug",
+        "z": "1137166cdcd75077",
+        "name": "debug 10",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 910,
+        "y": 340,
+        "wires": []
+    },
+    {
+        "id": "7846485c6fbd7661",
+        "type": "debug",
+        "z": "1137166cdcd75077",
+        "name": "debug 11",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1280,
+        "y": 840,
+        "wires": []
+    }
+]
