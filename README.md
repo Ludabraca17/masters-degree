@@ -7,11 +7,11 @@
 <!-- markdownlint-enable MD033 -->
 
 This repository contains files and notes taken through the duration of writing of master's degree thesis on a smart factory case study.
-Important folder is named Operation_files, where all of the code files are placed. JSON_work_orders folder contains the templates of several product orders, which are expectend in the main programme. Those are primarily used by ThingsBoard devices and are here as an example  of the data this programme will process. Mixed_files folder contains severaly python files, test code and other supporting files that have been used to create this project. NodeRed folder contains the JSON of the entire NR part of the project which is in charge of local control over each of the modular production units and AMRs. 
+Important folder is named Operation_files, where all of the code files are placed. JSON_work_orders folder contains the templates of several product orders, which are expectend in the main programme. Those are primarily used by ThingsBoard devices and are here as an example  of the data this programme will process. Mixed_files folder contains severaly python files, test code and other supporting files that have been used to create this project. NodeRed folder contains the JSON of the entire NR part of the project which is in charge of local control over each of the modular production units and AMRs.
 
 ## Using the repository
 
-After cloning the repository, you will have to run the "install.ps1" in a Windows PowerShell command window. This script will create the virtual environment in the folder where the script is placed. It will also read the requirements_libraries.txt which contains the names of the important libraries used in the project, which are not already installed within the base python environment. In case the venv already exists it will simply skip the creation and finish the script. 
+After cloning the repository, you will have to run the "install.ps1" in a Windows PowerShell command window. This script will create the virtual environment in the folder where the script is placed. It will also read the requirements_libraries.txt which contains the names of the important libraries used in the project, which are not already installed within the base python environment. In case the venv already exists it will simply skip the creation and finish the script.
 
 After that you may run the "run.ps1" script which will then start the main_operation_file.py. The system is meant to be running and waiting for ThingsBoard data upon which it will start the execution of opeartions. After the completion of the tasks, you can stop the script by pressing "ctrl+c".
 
