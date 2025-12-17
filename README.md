@@ -15,7 +15,7 @@ After cloning the repository, you will have to run the "install.ps1" in a Window
 
 After that you may run the "run.ps1" script which will then start the main_operation_file.py. The system is meant to be running and waiting for ThingsBoard data upon which it will start the execution of opeartions. After the completion of the tasks, you can stop the script by pressing "ctrl+c".
 
-## 2. Notes about the operation of the system
+## 2. Notes about the operation of the system TEST
 
 The system uses a credential.json file which is not provided for safety reasons. It contains the data for accessing ThingsBoard devices through a user which has access to them. It then reads certain attributes and extracts a production order which is then used to create a operation list, which will be sent to modular production units and AMRs. It also utilizes TB devices in order to see whether certain modular units have completed their operations and then, acording to the planned production order, sends new operations to said modular units.
 
