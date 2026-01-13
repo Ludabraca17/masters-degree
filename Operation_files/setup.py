@@ -2,6 +2,8 @@
 import copy
 import read_attribute as read
 import update_attribute as update
+import json
+
 
 
 def setup(credentials: dict) -> None:
@@ -32,21 +34,51 @@ def setup(credentials: dict) -> None:
             "currentOperation"
         )
 
-        if current_op is None:
-            continue  # or log warning
-
-        # Defensive copy (good practice)
-        operation_payload = copy.deepcopy(current_op)
-
-        # Send entire operation as attribute
+        #if current_op is None:
+        current_op = {
+                        "data": {
+                            "machineID": None,
+                            "uniqueOpID": None,
+                            "assemblyParent": None,
+                            "part": None,
+                            "color": None,
+                            "queuePosition": None,
+                            "scheduledOpStart": None,
+                            "scheduledOpEnd": None,
+                            "AGVstartPos": None,
+                            "AGVendPos": None,
+                            "AGV": None
+                        },
+                        "metrics": {
+                            "status": "Setup",
+                            "realOpStart": None,
+                            "realOpEnd": None,
+                            "startTs": None
+                        }
+                    }
+            
         update.update_attribute(
             USERNAME,
             PASSWORD,
             device_id,
             THINGSBOARD_URL,
             "currentOperation",
-            operation_payload
-        )
+            current_op
+                )
+            #continue  # or log warning
+        #else:
+            # Defensive copy (good practice)
+            #operation_payload = copy.deepcopy(current_op)
+
+            # Send entire operation as attribute
+            #update.update_attribute(
+                #USERNAME,
+                #PASSWORD,
+                #device_id,
+                #THINGSBOARD_URL,
+                #"currentOperation",
+                #operation_payload
+            #)
 
         # Reset conveyor states
         update.update_attribute(
