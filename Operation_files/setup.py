@@ -1,12 +1,15 @@
-#file for setup
+# file for setup
+import copy
 import read_attribute as read
 import update_attribute as update
+
 
 def setup(credentials: dict) -> None:
     """
     Function that completes the setup of the system before the start.
 
-    There is a possibility of an error in case some of the modules that are present in credentials file are not online.
+    It reads the currentOperation from each module and
+    re-sends the entire operation as an attribute without modification.
     """
 
     module_keys = credentials["module_details"].keys()
@@ -14,20 +17,74 @@ def setup(credentials: dict) -> None:
 
     USERNAME = credentials["thingsboard_data"]["username"]
     PASSWORD = credentials["thingsboard_data"]["password"]
-    VIRTUAL_DEVICE_ID = credentials["misc_details"]["virtual_device"]["device_id"]
     THINGSBOARD_URL = credentials["thingsboard_data"]["tb_url"]
 
-    for i in module_keys:
-        last_op = read.read_attribute(USERNAME, PASSWORD, credentials["module_details"][i]["device_id"], THINGSBOARD_URL, "currentOperation")
-        setup_op = last_op
-        setup_op["metrics"]["status"] = "Setup"
+    # ---------- MODULES ----------
+    for key in module_keys:
+        device_id = credentials["module_details"][key]["device_id"]
 
-        update.update_attribute(USERNAME, PASSWORD, credentials["module_details"][i]["device_id"], THINGSBOARD_URL, "currentOperation", setup_op)
-        update.update_attribute(USERNAME, PASSWORD, credentials["module_details"][i]["device_id"], THINGSBOARD_URL, "conveyorMessage", "Idle")
-        update.update_attribute(USERNAME, PASSWORD, credentials["module_details"][i]["device_id"], THINGSBOARD_URL, "conveyorResponse", "Idle")
+        # Read full current operation
+        current_op = read.read_attribute(
+            USERNAME,
+            PASSWORD,
+            device_id,
+            THINGSBOARD_URL,
+            "currentOperation"
+        )
 
-    for i in agv_keys: #Should i set this and override ROS?
-        update.update_attribute(USERNAME, PASSWORD, credentials["AGV_details"][i]["device_id"], THINGSBOARD_URL, "commandAGV", "Idle")
-        update.update_attribute(USERNAME, PASSWORD, credentials["AGV_details"][i]["device_id"], THINGSBOARD_URL, "status", "Idle")
+        if current_op is None:
+            continue  # or log warning
 
-    return 
+        # Defensive copy (good practice)
+        operation_payload = copy.deepcopy(current_op)
+
+        # Send entire operation as attribute
+        update.update_attribute(
+            USERNAME,
+            PASSWORD,
+            device_id,
+            THINGSBOARD_URL,
+            "currentOperation",
+            operation_payload
+        )
+
+        # Reset conveyor states
+        update.update_attribute(
+            USERNAME,
+            PASSWORD,
+            device_id,
+            THINGSBOARD_URL,
+            "conveyorMessage",
+            "Idle"
+        )
+        update.update_attribute(
+            USERNAME,
+            PASSWORD,
+            device_id,
+            THINGSBOARD_URL,
+            "conveyorResponse",
+            "Idle"
+        )
+
+    # ---------- AGVs ----------
+    for key in agv_keys:
+        device_id = credentials["AGV_details"][key]["device_id"]
+
+        update.update_attribute(
+            USERNAME,
+            PASSWORD,
+            device_id,
+            THINGSBOARD_URL,
+            "commandAGV",
+            "Idle"
+        )
+        update.update_attribute(
+            USERNAME,
+            PASSWORD,
+            device_id,
+            THINGSBOARD_URL,
+            "status",
+            "Idle"
+        )
+
+    return
