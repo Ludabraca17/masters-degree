@@ -51,8 +51,8 @@ def setup(credentials: dict) -> None:
                         },
                         "metrics": {
                             "status": "Setup",
-                            "realOpStart": None,
-                            "realOpEnd": None,
+                            "realOpStart": 1768309648600,
+                            "realOpEnd": 1768309648650,
                             "startTs": None
                         }
                     }

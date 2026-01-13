@@ -1,7 +1,7 @@
 #this is a new MES python file which is created on foundation of the previous MES file ("MES_python_file.py and FINAL_MES.py") which are too much hardcoded
 
 import logging
-import requests
+#import requests
 import time
 import json
 from datetime import datetime
@@ -66,6 +66,11 @@ def _is_final_op(op: dict) -> bool:
     return _is_true(d.get("endFlag", False))  # privzeto False, če zastavice ni
 
 # SETUP 
+# Change working directory to script folder
+os.chdir(os.path.dirname(__file__))  # ensures relative paths are from script folder
+print("CWD:", os.getcwd())
+
+
 BASE_DIR = Path(__file__).resolve().parent
 credentials_path = BASE_DIR / "credentials.json"
 

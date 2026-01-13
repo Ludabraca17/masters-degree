@@ -95,7 +95,7 @@ def start_transport(transport_operations: list,
                         product["assembly"][op_id] = current_operation
         
         elif status == "Transporting":
-            if agv_status == "Delivered" : #and end_pos == target_module #UNCOMMENT target_module IF MULTIPLE AMR USED
+            if agv_status == "Delivered" and end_pos == target_module: #UNCOMMENT target_module IF MULTIPLE PRODUCTS IN ONE RUN
                 print("ko napišem delivered")
                 #update.update_attribute(USERNAME,
                                         #PASSWORD,
@@ -243,7 +243,7 @@ def end_transport(transport_operations: list,
             continue
 
         # 2) Waiting for transport + AMR is actually waiting -> send to AMR
-        elif status == "Waiting for transport" and agv_status == "Waiting" :#and start_pos == target_module #UNCOMMENT target_module IF MULTIPLE AMR USED
+        elif status == "Waiting for transport" and agv_status == "Waiting" and start_pos == target_module: #UNCOMMENT target_module IF MULTIPLE AMR USED
             update.update_attribute(USERNAME, 
                                     PASSWORD, 
                                     credentials["module_details"][start_pos]["device_id"],
@@ -289,12 +289,13 @@ def end_transport(transport_operations: list,
             continue
 
         # 3) Transporting -> when AMR returns Delivered we complete the transport
-        elif status == "Transporting" : #and start_pos == target_module #UNCOMMENT target_module IF MULTIPLE AMR USED
+        elif status == "Transporting" and end_pos == target_module: #UNCOMMENT target_module IF MULTIPLE PRODUCTS IN ONE RUN
             #if agv_status == "Delivered" and end_pos == target_module: #leave this for possibility of warehouse module
                 #pass
+            print("KUMARICE")
             update.update_attribute(USERNAME, 
                                     PASSWORD, 
-                                    credentials["module_details"][start_pos]["device_id"],
+                                    credentials["module_details"][machine]["device_id"],
                                     THINGSBOARD_URL, 
                                     "conveyorResponse", 
                                     "Idle")
@@ -429,6 +430,7 @@ def transport_operation_between_modules(transport_operations: list,
                                     "commandAGV",
                                     "Prepare")
             current_operation["metrics"]["status"] = "Waiting for transport" #TO SPREMENI V WAITING FOR TRANSPORT
+            print(f"HAHAHAHAHAHAH {current_operation}")
             #
             logging.stamp_operation_metrics(current_operation["metrics"], new_status="Waiting for transport", transport_event="start")
             #
@@ -440,7 +442,7 @@ def transport_operation_between_modules(transport_operations: list,
             continue  # Skip the rest of the loop iteration
 
         # Check if waiting for transport
-        elif status == "Waiting for transport" and agv_status == "Waiting" : #and start_pos == target_module
+        elif status == "Waiting for transport" and agv_status == "Waiting" and start_pos == target_module: #UNCOMMENT target_module IF MULTIPLE PRODUCTS IN ONE RUN
             print("prižiganje traku nekaj s")
             update.update_attribute(USERNAME,
                                     PASSWORD,
@@ -504,7 +506,7 @@ def transport_operation_between_modules(transport_operations: list,
                 
                 continue  # Skip the rest of the loop iteration
 
-            if agv_status == "Delivered" : #and end_pos == target_module #UNCOMMENT target_module IF MULTIPLE AMR USED
+            if agv_status == "Delivered" and end_pos == target_module: #UNCOMMENT target_module IF MULTIPLE PRODUCTS IN ONE RUN
                 print("ko napišem delivered")
                 update.update_attribute(USERNAME,
                                         PASSWORD,

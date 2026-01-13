@@ -81,10 +81,10 @@ def save_finished_order(order_data: Dict[str, Any],
                 or order_data.get("header", {}).get("orderID")
                 or f"DN_{ts_iso}")
 
-    # ✨ 1) Najprej obogati DN z berljivimi časi (doda startTsMs/endTsMs/procDurationSec...)
+    #1) Najprej obogati DN z berljivimi časi (doda startTsMs/endTsMs/procDurationSec...)
     enrich_times_readable(order_data)
 
-    # ✨ 2) Šele nato izračunaj summary (da “vidi” *_Ms/*_Sec)
+    #2) Šele nato izračunaj summary (da “vidi” *_Ms/*_Sec)
     summary = build_quick_summary(order_data)
     if extra_summary:
         summary.update(extra_summary)
